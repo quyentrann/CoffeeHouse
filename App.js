@@ -1,6 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import '@expo/metro-runtime';
-import App from './src/routers/router';
+import "@expo/metro-runtime"
+import { NavigationContainer } from "@react-navigation/native";
+import Auth from "./src/routers/router";
 
-export default App;
+export default () => (
+    <NavigationContainer>
+      <Auth />
+    </NavigationContainer>
+);
