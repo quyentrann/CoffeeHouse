@@ -24,7 +24,7 @@ export default function ItemProductComponent() {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ fontSize: 18, color: '#3d3d3d' }}>55.000đ</Text>
         <TouchableOpacity>
-          <AntDesign name="pluscircle" size={26} color="#f9861b" />
+          <AntDesign name="pluscircle" size={26} color="#dd6e06" />
         </TouchableOpacity>
       </View>
     </View>
