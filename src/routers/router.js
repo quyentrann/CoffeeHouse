@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../../screens/HomeScreen';
 import DetailsScreen from '../../screens/LoginScreen';
 import LoginScreen from '../../screens/LoginScreen';
-import ForgotAccount from '../../screens/ForgotAccount';
-import SignUp from '../../screens/SignUp';
+import ForgotAccount from '../../screens/ForgotAccountScreen';
+import SignUp from '../../screens/SignUpScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +22,7 @@ export function AppRouter() {
 export default function Auth() {
   return(
     <Stack.Navigator screenOptions={{
-      headerShown:false
+      // headerShown:false
     }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotAccount" component={ForgotAccount} />
