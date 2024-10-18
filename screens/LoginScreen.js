@@ -171,7 +171,7 @@ const [user, setUser] = useState('')
                 Đăng ký
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=> navigation.navigate("ForgotAccount")}>
+            <TouchableOpacity onPress={()=> navigation.navigate("ForgotAccount", {users: users})}>
               <Text style={{ fontSize: 17, fontWeight: '500', color: 'blue' }}>
                 Quên mật khẩu
               </Text>
