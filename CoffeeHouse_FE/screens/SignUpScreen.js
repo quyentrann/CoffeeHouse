@@ -77,6 +77,7 @@ function SignUpScreen({ navigation, route }) {
           placeholder="Nhập số điện thoại"
           style={{
             height: 50,
+            minHeight:50,
             width: '100%',
             borderColor: '#ddd',
             borderWidth: 1,
@@ -95,6 +96,7 @@ function SignUpScreen({ navigation, route }) {
           secureTextEntry
           style={{
             height: 50,
+            minHeight:50,
             width: '100%',
             borderColor: '#ddd',
             borderWidth: 1,
@@ -112,6 +114,7 @@ function SignUpScreen({ navigation, route }) {
           secureTextEntry
           style={{
             height: 50,
+            minHeight:50,
             width: '100%',
             borderColor: '#ddd',
             borderWidth: 1,
