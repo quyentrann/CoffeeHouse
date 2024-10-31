@@ -12,6 +12,7 @@ import {
 function SignUpScreen({ navigation, route }) {
   const users = route.params.users;
   console.log(users);
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,27 +23,51 @@ function SignUpScreen({ navigation, route }) {
     return !!newPhone;
   }
 
-  function handleRegister() {
-    if (!phone || !password || !confirmPassword) {
+  async function handleRegister(name, phone, password) {
+    if (!name || !phone || !password || !confirmPassword) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin!');
       return;
     }
+    setErrorMessage('');
+
     if (checkPhone(phone)) {
       setErrorMessage('Số điện thoại này đã được đăng ký');
       return;
     }
+
     if (password !== confirmPassword) {
       setErrorMessage('Mật khẩu xác nhận không khớp!');
       return;
     }
-    setErrorMessage('');
-    Alert.alert('Thành công', 'Đăng ký thành công!');
-    navigation.navigate('Login');
+    const newUser = { fullName: name, phone: phone, passWord: password };
+    try {
+      const response = await fetch('http://localhost:8080/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: name,
+          phone: phone,
+          passWord: password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Đăng ký không thành công');
+      }
+
+      setErrorMessage('');
+      Alert.alert('Thành công', 'Đăng ký thành công!');
+      navigation.navigate('Login', { users });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 0.5 }}>
         <Image
           source={require('../src/assets/images/login.jpg')}
           style={{ width: '100%', height: '100%' }}
@@ -72,12 +97,26 @@ function SignUpScreen({ navigation, route }) {
           }}>
           Đăng ký tài khoản mới
         </Text>
-
+        <TextInput
+          placeholder="Nhập tên"
+          style={{
+            height: 50,
+            width: '100%',
+            borderColor: '#ddd',
+            borderWidth: 1,
+            borderRadius: 15,
+            paddingLeft: 15,
+            marginBottom: 15,
+            fontSize: 16,
+            color: 'gray',
+          }}
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
         <TextInput
           placeholder="Nhập số điện thoại"
           style={{
             height: 50,
-            minHeight:50,
             width: '100%',
             borderColor: '#ddd',
             borderWidth: 1,
@@ -96,7 +135,6 @@ function SignUpScreen({ navigation, route }) {
           secureTextEntry
           style={{
             height: 50,
-            minHeight:50,
             width: '100%',
             borderColor: '#ddd',
             borderWidth: 1,
@@ -114,7 +152,6 @@ function SignUpScreen({ navigation, route }) {
           secureTextEntry
           style={{
             height: 50,
-            minHeight:50,
             width: '100%',
             borderColor: '#ddd',
             borderWidth: 1,
@@ -133,14 +170,14 @@ function SignUpScreen({ navigation, route }) {
         <TouchableOpacity
           style={{
             height: 48,
-            width: 340,
+            width: '100%',
             backgroundColor: 'blue',
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 15,
             marginTop: 10,
           }}
-          onPress={() => handleRegister()}>
+          onPress={() => handleRegister(name, phone, password)}>
           <Text style={{ fontSize: 18, color: 'white', fontWeight: '500' }}>
             Đăng ký
           </Text>
