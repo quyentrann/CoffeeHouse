@@ -6,4 +6,6 @@ npm install @expo/vector-icons
 npm i @ui-kitten/components @eva-design/eva react-native-svg
 npm i @ui-kitten/components react-native-svg@9.13.6
 npm install @mui/material @emotion/react @emotion/styled
-
+npm install @reduxjs/toolkit react-redux
+npm install react-native-paper
+npm install react-native-swiper

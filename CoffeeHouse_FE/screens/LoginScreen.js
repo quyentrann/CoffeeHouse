@@ -2,9 +2,12 @@ import { Entypo } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Image, Text, TextInput, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux_toolkit/slice';
 
 function LoginScreen({ navigation, route }) {
   const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
   const fetchUsers = async () => {
     try {
       const resp = await fetch('http://localhost:8080/api/user');
@@ -22,7 +25,6 @@ function LoginScreen({ navigation, route }) {
 
   const [phone, setPhone] = useState('01869188779');
   const [password, setPassWord] = useState('1111');
-  const [user, setUser] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   function checkPhone(phone) {
@@ -31,9 +33,12 @@ function LoginScreen({ navigation, route }) {
   }
 
   function checkPassWord(password) {
-    const newPass = users.find((value) => value.phone === phone && value.passWord ===password);
+    const newPass = users.find(
+      (value) => value.phone === phone && value.passWord === password
+    );
     return !!newPass;
   }
+
   function checkUser() {
     const newUser = users.find(
       (value) => value.phone === phone && value.passWord === password
@@ -54,8 +59,9 @@ function LoginScreen({ navigation, route }) {
     }
     setErrorMessage('');
     if (newUser) {
-      setUser(newUser);
-      navigation.navigate('Home');
+      dispatch(setUser(newUser));
+      console.log(newUser);
+      navigation.navigate('Home', { user: newUser });
     }
     setErrorMessage('');
   }

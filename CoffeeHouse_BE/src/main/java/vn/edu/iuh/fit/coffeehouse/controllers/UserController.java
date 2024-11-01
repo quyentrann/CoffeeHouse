@@ -24,11 +24,10 @@ public class UserController {
         return userService.getUserByID(id);
     }
 
-    @PostMapping
-    public User update(User product) {
+        @PostMapping
+    public User create(@RequestBody User product) {
         return userService.create(product);
     }
-
     @PutMapping("{id}")
     public User update(@PathVariable long id, @RequestBody User product) {
         return userService.update(id, product);
