@@ -5,29 +5,86 @@ import DetailsScreen from '../../screens/LoginScreen';
 import LoginScreen from '../../screens/LoginScreen';
 import ForgotAccount from '../../screens/ForgotAccountScreen';
 import SignUp from '../../screens/SignUpScreen';
+import { Provider } from 'react-redux';
+import store from '../../redux_toolkit/store';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Entypo from '@expo/vector-icons/Entypo';
+import OthersScreen from '../../screens/OthersScreen';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-export function AppRouter() {
+const TabScreen = () => {
   return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: true,
-        }}>
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: '#DF7422',
+        tabBarInactiveTintColor: 'black',
+      }}>
+      <Tab.Screen
+        name="Trang chủ"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Feather
+              name="home"
+              size={22}
+              color={color} 
+            />
+          ),
+          tabBarLabel: 'Trang chủ',
+          tabBarLabelStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Tab.Screen
+        name="orders"
+        component={DetailsScreen}
+        options={{
+          tabBarIcon: ({color}) => (<Feather name="coffee" size={22} color={color} />),
+        }}
+      />
+          <Tab.Screen
+        name="Store"
+        component={DetailsScreen}
+        options={{
+          tabBarIcon: ({color}) => (<Ionicons name="storefront-outline" size={24} color={color} />),
+        }}
+      />
+         <Tab.Screen
+        name="Voucher"
+        component={DetailsScreen}
+        options={{
+          tabBarIcon: ({color}) => (<MaterialCommunityIcons name="ticket-percent-outline" size={24} color={color} />),
+        }}
+      />
+          <Tab.Screen
+        name="Khác"
+        component={OthersScreen}
+        options={{
+          tabBarIcon: ({color}) => (<Entypo name="menu" size={24} color={color} />),
+        }}
+      />
+    </Tab.Navigator>
   );
-}
+};
 
 export default function Auth() {
-  return(
-    <Stack.Navigator screenOptions={{
-      // headerShown:false
-    }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="ForgotAccount" component={ForgotAccount} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-    </Stack.Navigator>
-  )
+  return (
+    <Provider store={store}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="ForgotAccount" component={ForgotAccount} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Home" component={TabScreen} />
+      </Stack.Navigator>
+    </Provider>
+  );
 }
