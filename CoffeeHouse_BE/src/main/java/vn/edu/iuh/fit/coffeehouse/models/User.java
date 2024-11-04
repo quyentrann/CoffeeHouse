@@ -30,12 +30,17 @@ public class User extends Auditable{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders;
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", phone='" + phone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", passWord='" + passWord + '\'' +
+                ", carts=" + carts +
+                ", orders=" + orders +
                 '}';
     }
 }
