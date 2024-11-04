@@ -21,7 +21,6 @@ function LoginScreen({ navigation, route }) {
   useEffect(() => {
     fetchUsers();
   }, []);
-  console.log(users);
 
   const [phone, setPhone] = useState('01869188779');
   const [password, setPassWord] = useState('1111');
@@ -34,14 +33,14 @@ function LoginScreen({ navigation, route }) {
 
   function checkPassWord(password) {
     const newPass = users.find(
-      (value) => value.phone === phone && value.passWord === password
+      (value) => value.phone === phone && value.password === password
     );
     return !!newPass;
   }
 
   function checkUser() {
     const newUser = users.find(
-      (value) => value.phone === phone && value.passWord === password
+      (value) => value.phone === phone && value.password === password
     );
     if (!phone || !password) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin');
@@ -58,6 +57,8 @@ function LoginScreen({ navigation, route }) {
       return;
     }
     setErrorMessage('');
+    console.log(newUser);
+    
     if (newUser) {
       dispatch(setUser(newUser));
       console.log(newUser);

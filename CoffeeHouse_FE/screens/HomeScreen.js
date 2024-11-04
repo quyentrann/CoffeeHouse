@@ -1,41 +1,85 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
-import React from 'react';
+import AntDesign from "@expo/vector-icons/AntDesign";
+import React from "react";
 import {
+  FlatList,
   Image,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import Swiper from 'react-native-swiper';
+} from "react-native";
+import Swiper from "react-native-swiper";
+import { useSelector } from "react-redux";
 
-function HomeScreen({ route }) {
-  const user = route.params?.user;
-  console.log(user);
+function HomeScreen() {
+  const user = useSelector((state) => state.userInfo);
+
+  const options = [
+    {
+      id: "1",
+      label: "Giao hàng",
+      imageSource: require("../src/assets/images/Delivery-2.ced14c9.png"),
+    },
+    {
+      id: "2",
+      label: "Mang đi",
+      imageSource: require("../src/assets/images/Pickup-2.86cbc47.png"),
+    },
+    {
+      id: "3",
+      label: "Cà phê hạt rang",
+      imageSource: require("../src/assets/images/Pickup-2.86cbc47.png"),
+    },
+    {
+      id: "4",
+      label: "Đổi Bean",
+      imageSource: require("../src/assets/images/Pickup-2.86cbc47.png"),
+    },
+    {
+      id: "5",
+      label: "Đơn hàng",
+      imageSource: require("../src/assets/images/comment.png"),
+    },
+    {
+      id: "6",
+      label: "Góp ý",
+      imageSource: require("../src/assets/images/Pickup-2.86cbc47.png"),
+    },
+    {
+      id: "7",
+      label: "Hạng thành viên",
+      imageSource: require("../src/assets/images/Pickup-2.86cbc47.png"),
+    },
+  ];
 
   const Banner = () => {
     const images = [
-      require('../src/assets/images/banner3.png'),
-      require('../src/assets/images/banner4a.jpg'),
-      require('../src/assets/images/banner3a.jpg'),
-      require('../src/assets/images/banner2.webp'),
-      require('../src/assets/images/banner2a.jpg'),
+      require("../src/assets/images/banner3.png"),
+      require("../src/assets/images/banner4a.jpg"),
+      require("../src/assets/images/banner3a.jpg"),
+      require("../src/assets/images/banner2.webp"),
+      require("../src/assets/images/banner2a.jpg"),
     ];
 
     return (
       <Swiper
-        style={{ flex: 1 }}
-        showsButtons={false}
-        autoplay={true}
-        autoplayTimeout={2}>
+        showsButtons={true}
+        autoplay
+        autoplayTimeout={2}
+        dotColor="#fff"
+        activeDotColor="#b0b0b0"
+        paginationStyle={{ marginBottom: -25 }}
+      >
         {images.map((image, index) => (
           <View
             key={index}
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
             <Image
               source={image}
-              style={{ height: '100%', width: '100%', borderRadius: 12 }}
+              style={{ height: "100%", width: "100%", borderRadius: 12 }}
             />
           </View>
         ))}
@@ -43,140 +87,50 @@ function HomeScreen({ route }) {
     );
   };
 
+  const IconButton = ({ imageSource, label }) => (
+    <TouchableOpacity
+      style={{ margin: 20, alignItems: "center", justifyContent: "center" }}
+    >
+      <Image source={imageSource} style={{ height: 50, width: 50 }} />
+      <View style={{ height: 30, width: 70, marginTop: 6 }}>
+        <Text style={{ textAlign: "center", fontSize:12, fontWeight:"bold" }}>{label}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
-    <View
-      style={{
-        flex: 1,
-        // backgroundColor: 'red',
-        padding: 15,
-      }}>
-     
+    <View style={{ flex: 1, padding: 15 }}>
       <View
         style={{
           height: 180,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           borderRadius: 12,
           marginVertical: 5,
-        }}>
+        }}
+      >
         <Banner />
       </View>
       <View
         style={{
           borderWidth: 1,
-          height: 130,
+          height: 100,
           marginVertical: 17,
-          backgroundColor: 'white',
-          borderRadius: 12,
-          borderColor: 'gray',
-          overflow: 'hidden',
-        }}>
-        <ScrollView
-          horizontal={true}
+          backgroundColor: "white",
+          borderRadius: 8,
+          borderColor: "gray",
+          overflow: "hidden",
+        }}
+      >
+        <FlatList
+          data={options}
+          renderItem={({ item }) => (
+            <IconButton imageSource={item.imageSource} label={item.label} />
+          )}
+          keyExtractor={(item) => item.id}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/Delivery-2.ced14c9.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 6 }}>
-              <Text style={{ textAlign: 'center' }}>Giao hàng</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/Pickup-2.86cbc47.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 6 }}>
-              <Text style={{ textAlign: 'center' }}>Mang đi</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/Pickup-2.86cbc47.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 10 }}>
-              <Text style={{ textAlign: 'center' }}>Cà phê hạt rang</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/Pickup-2.86cbc47.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 6 }}>
-              <Text style={{ textAlign: 'center' }}>Đổi Bean</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/comment.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 6 }}>
-              <Text style={{ textAlign: 'center' }}>Đơn hàng</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/Pickup-2.86cbc47.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 6 }}>
-              <Text style={{ textAlign: 'center' }}>Góp ý</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              margin: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-              source={require('../src/assets/images/Pickup-2.86cbc47.png')}
-              style={{ height: 60, width: 60 }}
-            />
-            <View style={{ height: 30, width: 70, marginTop: 6 }}>
-              <Text style={{ textAlign: 'center' }}>Hạng thành viên</Text>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
+          contentContainerStyle={{ alignItems: "center" }}
+        />
       </View>
     </View>
   );

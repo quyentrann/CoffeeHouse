@@ -23,6 +23,7 @@ const TabScreen = () => {
       screenOptions={{
         tabBarActiveTintColor: '#DF7422',
         tabBarInactiveTintColor: 'black',
+        headerShown: false,
         tabBarStyle:{
           height: 65, paddingBottom:10, paddingTop: 10
         }
