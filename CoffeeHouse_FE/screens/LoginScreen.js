@@ -1,38 +1,73 @@
 import { Entypo } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Image, Text, TextInput, View } from 'react-native';
 
-function LoginScreen({navigation}) {
-  const users= [
-    {
-      id: 1,
-      phone:'0945959741',
-      password:'1234'
-    },
-    {
-      id: 2,
-      phone:'0326045365',
-      password:'4321'
-    },
-    {
-      id: 3,
-      phone:'0369890045',
-      password:'6789'
-    },
-  ]
+function LoginScreen({ navigation, route }) {
+  const [users, setUsers] = useState([]);
+  const fetchUsers = async () => {
+    try {
+      const resp = await fetch('http://localhost:8080/api/user');
+      const json = await resp.json();
+      setUsers(json);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const [phone, setPhone] = useState('0945959741')
-  const [password, setPassWord] = useState('1234')
-const [user, setUser] = useState('')
-  function checkPhone(phone, password){
-    const newUser= users.find(value=> value.phone===phone &&value.password===password)
-    if(newUser)
-      setUser(newUser)
-    navigation.navigate("Home")
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  console.log(users);
+
+  const [phone, setPhone] = useState('01869188779');
+  const [password, setPassWord] = useState('1111');
+  const [user, setUser] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  function checkPhone(phone) {
+    const newPhone = users.find((value) => value.phone === phone);
+    return !!newPhone;
   }
+
+  function checkPassWord(password) {
+    const newPass = users.find((value) => value.phone === phone && value.passWord ===password);
+    return !!newPass;
+  }
+  function checkUser() {
+    const newUser = users.find(
+      (value) => value.phone === phone && value.passWord === password
+    );
+    if (!phone || !password) {
+      setErrorMessage('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
+    setErrorMessage('');
+    if (!checkPhone(phone)) {
+      setErrorMessage('Số điện thoại này chưa được đăng ký. ');
+      return;
+    }
+    setErrorMessage('');
+    if (!checkPassWord(password)) {
+      setErrorMessage('Mật khẩu không đúng. Vui lòng nhập lại');
+      return;
+    }
+    setErrorMessage('');
+    if (newUser) {
+      setUser(newUser);
+      navigation.navigate('Home');
+    }
+    setErrorMessage('');
+  }
+
+  useEffect(() => {
+    if (route.params?.users) {
+      setUsers(route.params?.users);
+    }
+  }, [route.params?.users]);
+
   return (
-    <View style={{ flex: 1, backgroundColor:'white' }}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={{ flex: 0.8 }}>
         <Image
           source={require('../src/assets/images/login.jpg')}
@@ -81,7 +116,7 @@ const [user, setUser] = useState('')
                   alignItems: 'center',
                   flexDirection: 'row',
                   marginLeft: 15,
-                  marginTop: 15,
+                  marginTop: 12,
                 }}>
                 <Entypo
                   name="star"
@@ -95,7 +130,7 @@ const [user, setUser] = useState('')
                   fontWeight: '500',
                   fontSize: 15,
                   marginLeft: 3,
-                  marginTop: 15,
+                  marginTop: 12,
                 }}>
                 +84
               </Text>
@@ -105,7 +140,7 @@ const [user, setUser] = useState('')
                   height: 27,
                   marginLeft: 15,
                   borderColor: 'gray',
-                  marginTop: 12,
+                  marginTop: 6,
                 }}
               />
             </View>
@@ -121,7 +156,9 @@ const [user, setUser] = useState('')
                 fontSize: 16,
                 color: 'gray',
                 fontWeight: '400',
-              }} value={phone} onChangeText={(text)=> setPhone(text)}
+              }}
+              value={phone}
+              onChangeText={(text) => setPhone(text)}
             />
             <TextInput
               placeholder="Mật khẩu"
@@ -136,10 +173,25 @@ const [user, setUser] = useState('')
                 color: 'gray',
                 fontWeight: '400',
                 marginTop: 15,
-              }} value={password} onChangeText={(text)=> setPassWord(text)}
+              }}
+              value={password}
+              onChangeText={(text) => setPassWord(text)}
             />
           </View>
-          <View style={{ flex: 1 , marginTop: 10}}>
+          <View
+            style={{
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              width: '85%',
+              paddingTop: 3,
+            }}>
+            {errorMessage ? (
+              <Text style={{ color: 'red', marginBottom: 10 }}>
+                {errorMessage}
+              </Text>
+            ) : null}
+          </View>
+          <View style={{ flex: 1, marginTop: 10 }}>
             <TouchableOpacity
               style={{
                 height: 48,
@@ -148,7 +200,8 @@ const [user, setUser] = useState('')
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 10,
-              }} onPress={()=> checkPhone(phone, password)}>
+              }}
+              onPress={() => checkUser()}>
               <Text style={{ fontSize: 18, color: 'white', fontWeight: '500' }}>
                 Đăng nhập
               </Text>
@@ -158,20 +211,28 @@ const [user, setUser] = useState('')
             style={{
               flex: 1,
               flexDirection: 'row',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
+              width: 333,
             }}>
-            <TouchableOpacity onPress={()=> navigation.navigate("SignUp", {users: users})}>
+            <TouchableOpacity
+              onPress={() => {
+                setErrorMessage('');
+                navigation.navigate('SignUp', { users: users });
+              }}>
               <Text
                 style={{
                   fontSize: 17,
                   fontWeight: '500',
                   color: 'blue',
-                  paddingRight: 130,
                 }}>
                 Đăng ký
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=> navigation.navigate("ForgotAccount", {users: users})}>
+            <TouchableOpacity
+              onPress={() => {
+                setErrorMessage('');
+                navigation.navigate('ForgotAccount', { users: users });
+              }}>
               <Text style={{ fontSize: 17, fontWeight: '500', color: 'blue' }}>
                 Quên mật khẩu
               </Text>
@@ -194,7 +255,7 @@ const [user, setUser] = useState('')
             <View
               style={{
                 borderWidth: 0.5,
-                width: 138,
+                width: 142,
                 height: 1,
                 borderColor: '#adadad',
               }}
@@ -212,7 +273,7 @@ const [user, setUser] = useState('')
             <View
               style={{
                 borderWidth: 0.5,
-                width: 138,
+                width: 142,
                 height: 1,
                 borderColor: '#adadad',
               }}
@@ -224,7 +285,7 @@ const [user, setUser] = useState('')
           style={{
             flex: 0.5,
             flexDirection: 'row',
-            marginLeft: 40,
+            marginLeft: 25,
           }}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity
@@ -253,8 +314,8 @@ const [user, setUser] = useState('')
                     color: '#355fde',
                     fontSize: 20,
                     fontWeight: 'bold',
-                    paddingTop: 5,
-                    marginLeft: 2,
+                    paddingTop: 6,
+                    marginLeft: 3,
                   }}>
                   f
                 </Text>
@@ -275,6 +336,7 @@ const [user, setUser] = useState('')
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 15,
+                marginLeft: 15,
               }}>
               <Image
                 source={require('../src/assets/images/google.jpg')}
