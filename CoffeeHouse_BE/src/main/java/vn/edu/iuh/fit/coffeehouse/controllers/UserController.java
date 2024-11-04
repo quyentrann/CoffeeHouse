@@ -23,14 +23,13 @@ public class UserController {
     public User getUserById(@PathVariable long id) {
         return userService.getUserByID(id);
     }
-
-    @GetMapping("getUserByPhone")
-    public User getUserByPhone(@RequestParam String phone) {
-        return userService.getUserByPhone(phone);
-    }
     @PostMapping
     public User update(User user) {
         return userService.create(user);
+    }
+    @GetMapping("getUserByPhone")
+    public User getUserByPhone(@RequestParam String phone) {
+        return userService.getUserByPhone(phone);
     }
 
     @PutMapping("forgot/{id}")

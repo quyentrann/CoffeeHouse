@@ -38,7 +38,7 @@ public class User extends Auditable{
                 ", fullName='" + fullName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", passWord='" + passWord + '\'' +
+                ", passWord='" + password + '\'' +
                 ", carts=" + carts +
                 ", orders=" + orders +
                 '}';
