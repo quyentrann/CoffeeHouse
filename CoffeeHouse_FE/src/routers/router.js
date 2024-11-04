@@ -23,6 +23,9 @@ const TabScreen = () => {
       screenOptions={{
         tabBarActiveTintColor: '#DF7422',
         tabBarInactiveTintColor: 'black',
+        tabBarStyle:{
+          height: 65, paddingBottom:10, paddingTop: 10
+        }
       }}>
       <Tab.Screen
         name="Trang chủ"
@@ -37,7 +40,7 @@ const TabScreen = () => {
           ),
           tabBarLabel: 'Trang chủ',
           tabBarLabelStyle: {
-            fontWeight: 'bold',
+            fontWeight: '500',
           },
         }}
       />
@@ -46,27 +49,43 @@ const TabScreen = () => {
         component={DetailsScreen}
         options={{
           tabBarIcon: ({color}) => (<Feather name="coffee" size={22} color={color} />),
+          tabBarLabel: 'Đặt hàng',
+          tabBarLabelStyle: {
+            fontWeight: '500',
+          },
         }}
       />
           <Tab.Screen
         name="Store"
         component={DetailsScreen}
         options={{
-          tabBarIcon: ({color}) => (<Ionicons name="storefront-outline" size={24} color={color} />),
+          tabBarIcon: ({color}) => (<Ionicons name="storefront-outline" size={22} color={color} />),
+          tabBarLabel: 'Cửa hàng',
+          tabBarLabelStyle: {
+            fontWeight: '500',
+          },
         }}
       />
          <Tab.Screen
         name="Voucher"
         component={DetailsScreen}
         options={{
-          tabBarIcon: ({color}) => (<MaterialCommunityIcons name="ticket-percent-outline" size={24} color={color} />),
+          tabBarIcon: ({color}) => (<MaterialCommunityIcons name="ticket-percent-outline" size={22} color={color} />),
+          tabBarLabel: 'Ưu đãi',
+          tabBarLabelStyle: {
+            fontWeight: '500',
+          },
         }}
       />
           <Tab.Screen
         name="Khác"
         component={OthersScreen}
         options={{
-          tabBarIcon: ({color}) => (<Entypo name="menu" size={24} color={color} />),
+          tabBarIcon: ({color}) => (<Entypo name="menu" size={22} color={color} />),
+          tabBarLabel: 'Khác',
+          tabBarLabelStyle: {
+            fontWeight: '500',
+          },
         }}
       />
     </Tab.Navigator>
