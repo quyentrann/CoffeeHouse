@@ -24,7 +24,7 @@ public class User extends Auditable{
     private String phone;
 
     private String avatar;
-
+    private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Cart> carts;
 

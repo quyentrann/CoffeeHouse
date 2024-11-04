@@ -44,4 +44,12 @@ public class UserService {
         }
         return false;
     }
+
+    public User getUserByPhoneAndPassword(String phone, String password){
+        return userRepository.getUserByPhoneAndPassword(phone,password);
+    }
+
+    public User getUserByPhone(String phone){
+        return userRepository.getUserByPhone(phone);
+    }
 }

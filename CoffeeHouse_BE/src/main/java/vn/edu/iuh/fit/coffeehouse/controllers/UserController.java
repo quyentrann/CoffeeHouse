@@ -24,18 +24,29 @@ public class UserController {
         return userService.getUserByID(id);
     }
 
+    @GetMapping("getUserByPhone")
+    public User getUserByPhone(@RequestParam String phone) {
+        return userService.getUserByPhone(phone);
+    }
     @PostMapping
-    public User update(User product) {
-        return userService.create(product);
+    public User update(User user) {
+        return userService.create(user);
     }
 
-    @PutMapping("{id}")
-    public User update(@PathVariable long id, @RequestBody User product) {
-        return userService.update(id, product);
+    @PutMapping("forgot/{id}")
+    public User update(@PathVariable long id, @RequestBody User newUser) {
+        newUser.setId(id);
+        return userService.update(id, newUser);
     }
 
     @DeleteMapping("{id}")
     public Boolean delete(@PathVariable long id) {
         return userService.delete(id);
+    }
+
+    @GetMapping("/login")
+    public User login(@RequestParam String phone , @RequestParam String password) {
+        System.out.println(userService.getUserByPhoneAndPassword(phone,password));
+        return userService.getUserByPhoneAndPassword(phone,password);
     }
 }
