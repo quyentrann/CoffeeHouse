@@ -13,6 +13,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import OthersScreen from '../../screens/OthersScreen';
+import SearchScreen from '../../screens/SearchScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -104,6 +105,7 @@ export default function Auth() {
         <Stack.Screen name="ForgotAccount" component={ForgotAccount} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={TabScreen} />
+        <Stack.Screen name="SearchScreen" component={SearchScreen} />
       </Stack.Navigator>
     </Provider>
   );
