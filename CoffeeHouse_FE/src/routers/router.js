@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../../screens/HomeScreen';
-import DetailsScreen from '../../screens/LoginScreen';
 import LoginScreen from '../../screens/LoginScreen';
 import ForgotAccount from '../../screens/ForgotAccountScreen';
 import SignUp from '../../screens/SignUpScreen';
@@ -13,6 +12,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import OthersScreen from '../../screens/OthersScreen';
+import SearchScreen from '../../screens/SearchScreen';
+import OrderScreen from '../../screens/OrderScreen'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,7 +48,7 @@ const TabScreen = () => {
       />
       <Tab.Screen
         name="orders"
-        component={DetailsScreen}
+        component={OrderScreen}
         options={{
           tabBarIcon: ({color}) => (<Feather name="coffee" size={22} color={color} />),
           tabBarLabel: 'Đặt hàng',
@@ -58,7 +59,7 @@ const TabScreen = () => {
       />
           <Tab.Screen
         name="Store"
-        component={DetailsScreen}
+        component={LoginScreen}
         options={{
           tabBarIcon: ({color}) => (<Ionicons name="storefront-outline" size={22} color={color} />),
           tabBarLabel: 'Cửa hàng',
@@ -69,7 +70,7 @@ const TabScreen = () => {
       />
          <Tab.Screen
         name="Voucher"
-        component={DetailsScreen}
+        component={LoginScreen}
         options={{
           tabBarIcon: ({color}) => (<MaterialCommunityIcons name="ticket-percent-outline" size={22} color={color} />),
           tabBarLabel: 'Ưu đãi',
@@ -104,6 +105,7 @@ export default function Auth() {
         <Stack.Screen name="ForgotAccount" component={ForgotAccount} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={TabScreen} />
+        <Stack.Screen name="SearchScreen" component={SearchScreen} />
       </Stack.Navigator>
     </Provider>
   );

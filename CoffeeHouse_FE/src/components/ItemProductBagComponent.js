@@ -2,32 +2,32 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export default function ItemProductComponent() {
+export default function ItemProductBagComponent({product}) {
   return (
     <TouchableOpacity>
       <View
         style={{
           width: '100%',
           justifyContent: 'space-between',
-          padding: 5,
+          padding: 1,
           flexDirection: 'row',
           flex:1
         }}>
-        <View style={{ justifyContent: 'center', alignItems: 'center' , flex: 1, paddingVertical: 7}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' , flex: 1, paddingVertical: 7, marginLeft: 16}}>
           <Image
-            source={require('../assets/images/item_product1.jpg')}
-            style={{ height: 115, width: 115, borderRadius: 8 }}
+            source={{ uri: `http://localhost:8080/api${product.image}` }}
+            style={{ height: 120, width: 120, borderRadius: 7 }}
           />
         </View>
-        <View style={{ padding: 10, flex:2 }}>
+        <View style={{ padding: 15, flex:2 , marginLeft: 10}}>
           <Text style={{ fontWeight: '500', fontSize: 16, }}>
-            Trà Xanh Latte Sữa Yến Mạch (Nóng)
+            {product.name}
           </Text>
-          <Text style={{ fontSize: 16, color: '#3d3d3d' , paddingTop: 7}}>55.000đ</Text>
+          <Text style={{ fontSize: 16, paddingTop: 7}}>{product.price} đ</Text>
         </View>
           <View style={{justifyContent:'flex-end'}}>
-          <TouchableOpacity>
-            <AntDesign name="pluscircle" size={28} color="#dd6e06" />
+          <TouchableOpacity style={{paddingBottom: 10, paddingRight: 5}}>
+            <AntDesign name="pluscircle" size={30} color="#C26005" />
           </TouchableOpacity>
           </View>
       </View>
