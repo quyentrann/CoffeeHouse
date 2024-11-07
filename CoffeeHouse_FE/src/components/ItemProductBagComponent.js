@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export default function ItemProductComponent({product}) {
+export default function ItemProductBagComponent({product}) {
   return (
     <TouchableOpacity>
       <View

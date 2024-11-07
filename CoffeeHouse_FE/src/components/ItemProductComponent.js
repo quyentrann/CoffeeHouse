@@ -2,32 +2,44 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export default function ItemProductComponent() {
+export default function ItemProductComponent({product}) {
   return (
-    <TouchableOpacity style={{margin: 5}}>
-      <View
-      style={{
-        height: 280,
-        width: 200,
-        justifyContent: 'space-between',
-        padding: 15,
-      }}>
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Image
-          source={require('../assets/images/item_product1.jpg')}
-          style={{ height: 165, width: 165, borderRadius: 12 }}
-        />
-      </View>
-      <Text style={{ fontWeight: '500', fontSize: 16 }}>
-        Trà Xanh Latte Sữa Yến Mạch (Nóng)
-      </Text>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 18, color: '#3d3d3d' }}>55.000đ</Text>
-        <TouchableOpacity>
-          <AntDesign name="pluscircle" size={26} color="#dd6e06" />
-        </TouchableOpacity>
-      </View>
-    </View>
-    </TouchableOpacity>
+    <TouchableOpacity style={{}}>
+            <View
+              style={{
+                height: 250,
+                width: 195,
+                justifyContent: 'space-around',
+                marginVertical: 10, paddingHorizontal: 5
+              }}>
+              <View style={{  }}>
+                <Image
+                  source={{ uri: `http://localhost:8080/api${product.image}` }}
+                  style={{ height: 160, width: 160, borderRadius: 12 }}
+                />
+              </View>
+              <Text style={{ fontWeight: '500', fontSize: 17, width: 170 }}>
+                {product.name}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text style={{ fontSize: 18, color: '#3d3d3d' }}>
+                  {product.price}
+                </Text>
+                <TouchableOpacity>
+                  <AntDesign
+                    name="pluscircle"
+                    size={29}
+                    color="#C26005"
+                    style={{ marginRight: 30, marginBottom: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableOpacity>
   );
 }

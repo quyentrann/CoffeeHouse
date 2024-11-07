@@ -147,7 +147,7 @@ function LoginScreen({ navigation, route }) {
                   height: 27,
                   marginLeft: 15,
                   borderColor: 'gray',
-                  marginTop: 6,
+                  marginTop: 10,
                 }}
               />
             </View>
