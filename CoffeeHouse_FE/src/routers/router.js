@@ -14,6 +14,8 @@ import Entypo from '@expo/vector-icons/Entypo';
 import OthersScreen from '../../screens/OthersScreen';
 import SearchScreen from '../../screens/SearchScreen';
 import OrderScreen from '../../screens/OrderScreen'
+import FavoriteProductsScreen from '../../screens/FavoriteProductsScreen'
+import DealScreen from '../../screens/DealsScreen'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,7 +72,7 @@ const TabScreen = () => {
       />
          <Tab.Screen
         name="Voucher"
-        component={LoginScreen}
+        component={DealScreen}
         options={{
           tabBarIcon: ({color}) => (<MaterialCommunityIcons name="ticket-percent-outline" size={22} color={color} />),
           tabBarLabel: 'Ưu đãi',
@@ -106,6 +108,7 @@ export default function Auth() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={TabScreen} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
+        <Stack.Screen name="FavoriteProductsScreen" component={FavoriteProductsScreen} />
       </Stack.Navigator>
     </Provider>
   );

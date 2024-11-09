@@ -56,7 +56,7 @@ function OrderScreen({ navigation, route }) {
 
   return (
     <ScrollView showsHorizontalScrollIndicator={false}>
-      <View style={{ flex: 1, padding: 15 }}>
+      <View style={{ flex: 1, padding: 15 , backgroundColor:'white'}}>
         <View
           style={{
             backgroundColor: 'white',

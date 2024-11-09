@@ -18,18 +18,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/api/images/{imageName}")
-    public ResponseEntity<?> getImage(@PathVariable String imageName) {
-        try {
-            ClassPathResource imgFile = new ClassPathResource("static/images/" + imageName);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(imgFile);
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body("Image not found");
-        }
-    }
-
     @GetMapping
     public List<Product> getAll(){
         return productService.getAll();
