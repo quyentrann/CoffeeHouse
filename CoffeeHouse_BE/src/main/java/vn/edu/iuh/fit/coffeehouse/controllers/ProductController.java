@@ -1,6 +1,10 @@
 package vn.edu.iuh.fit.coffeehouse.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.coffeehouse.models.Product;
 import vn.edu.iuh.fit.coffeehouse.services.ProductService;
@@ -13,7 +17,6 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
-
 
     @GetMapping
     public List<Product> getAll(){

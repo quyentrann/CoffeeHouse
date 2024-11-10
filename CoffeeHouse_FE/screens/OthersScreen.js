@@ -16,7 +16,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
-export default function OthersScreen() {
+export default function OthersScreen({navigation}) {
   return (
     <ScrollView>
       <View style={{ padding: 10 }}>
@@ -288,7 +288,7 @@ export default function OthersScreen() {
                 style={{
                   marginTop: 1,
                   backgroundColor: 'white',
-                }}>
+                }} onPress={()=> navigation.navigate("Login")}>
                 <View
                   style={{
                     flex: 1,

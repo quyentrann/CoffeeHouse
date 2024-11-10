@@ -1,6 +1,6 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
   FlatList,
   Image,
@@ -11,54 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Swiper from 'react-native-swiper';
 import { useSelector } from 'react-redux';
-import ItemCategoryComponent from '../src/components/ItemCategoryComponent';
+import ItemCategoryComponent from '../src/components/ItemCategoryBagComponent';
 
-function HomeScreen({ navigation, route }) {
-  const user = useSelector((state) => state.user.userInfo);
-  
-  const scrollViewRef = useRef(null);
-  const [showButton, setShowButton] = useState(false);
-
-  const options = [
-    {
-      id: '1',
-      label: 'Giao hàng',
-      imageSource: require('../src/assets/images/Delivery-2.ced14c9.png'),
-    },
-    {
-      id: '2',
-      label: 'Mang đi',
-      imageSource: require('../src/assets/images/Pickup-2.86cbc47.png'),
-    },
-    {
-      id: '3',
-      label: 'Cà phê hạt rang',
-      imageSource: require('../src/assets/images/cafe.png'),
-    },
-    {
-      id: '4',
-      label: 'Đổi Bean',
-      imageSource: require('../src/assets/images/beans.png'),
-    },
-    {
-      id: '5',
-      label: 'Đơn hàng',
-      imageSource: require('../src/assets/images/order.png'),
-    },
-    {
-      id: '6',
-      label: 'Góp ý',
-      imageSource: require('../src/assets/images/comment.png'),
-    },
-    {
-      id: '7',
-      label: 'Hạng thành viên',
-      imageSource: require('../src/assets/images/member.png'),
-    },
-  ];
-
+function OrderScreen({ navigation, route }) {
+  const user = useSelector((state) => state.userInfo);
   const optionsSearch = [
     {
       id: 1,
@@ -94,151 +51,26 @@ function HomeScreen({ navigation, route }) {
       id: 7,
       label: 'Bánh & Snack',
       image: require('../src/assets/images/70.jpg'),
-    },
+    }
   ];
 
-  const Banner = () => {
-    const images = [
-      require('../src/assets/images/banner3.png'),
-      require('../src/assets/images/banner4a.jpg'),
-      require('../src/assets/images/banner3a.jpg'),
-      require('../src/assets/images/banner2.webp'),
-      require('../src/assets/images/banner2a.jpg'),
-    ];
-
-    return (
-      <Swiper
-        showsButtons={true}
-        autoplay
-        autoplayTimeout={2}
-        dotColor="#fff"
-        activeDotColor="#b0b0b0"
-        paginationStyle={{ marginBottom: -25 }}>
-        {images.map((image, index) => (
-          <View
-            key={index}
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Image
-              source={image}
-              style={{ height: '100%', width: '100%', borderRadius: 12 }}
-            />
-          </View>
-        ))}
-      </Swiper>
-    );
-  };
-
-  const IconButton = ({ imageSource, label }) => (
-    <TouchableOpacity
-      style={{ margin: 20, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={imageSource} style={{ height: 55, width: 55 , borderRadius: 40}} />
-      <View style={{ height: 30, width: 70, marginTop: 6 }}>
-        <Text style={{ textAlign: 'center', fontSize: 12, fontWeight: 'bold' }}>
-          {label}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  const handleScroll = (event) => {
-    const currentOffset = event.nativeEvent.contentOffset.y;
-    setShowButton(currentOffset > 700); 
-  };
-
-  const scrollToTop = () => {
-    scrollViewRef.current?.scrollTo({
-      y: 0,
-      animated: true,
-    });
-  };
-
   return (
-    <View style={{flex:1}}>
-      <ScrollView showsHorizontalScrollIndicator={false}  ref={scrollViewRef} onScroll={handleScroll}  scrollEventThrottle={16}>
-      <View style={{ flex: 1, padding: 15, backgroundColor: 'white' }}>
-        <View
-          style={{
-            height: 180,
-            backgroundColor: 'white',
-            borderRadius: 12,
-            marginVertical: 5,
-          }}>
-          <Banner />
-        </View>
-        <View
-          style={{
-            borderWidth: 1,
-            height: 110,
-            marginVertical: 17,
-            backgroundColor: 'white',
-            borderRadius: 8,
-            borderColor: '#CFCFCF',
-            overflow: 'hidden',
-          }}>
-          <FlatList
-            data={options}
-            renderItem={({ item }) => (
-              <IconButton imageSource={item.imageSource} label={item.label} />
-            )}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ alignItems: 'center' }}
-          />
-        </View>
+    <ScrollView showsHorizontalScrollIndicator={false}>
+      <View style={{ flex: 1, padding: 15 , backgroundColor:'white'}}>
         <View
           style={{
             backgroundColor: 'white',
-            height: 290,
+            height: 280,
             borderRadius: 8,
             borderWidth: 1,
-            borderColor: '#CFCFCF',
+            borderColor: '#9C9C9C',
             padding: 9,
           }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{}}>
-              <TouchableOpacity
-                style={{
-                  height: 42,
-                  width: 290,
-                  justifyContent: 'center',
-                  backgroundColor: '#E3E3E3',
-                  borderRadius: 8,
-                }}
-                onPress={() => navigation.navigate('SearchScreen')}>
-                <View style={{ flexDirection: 'row', padding: 10 }}>
-                  <AntDesign name="search1" size={22} color="gray" />
-                  <Text
-                    style={{
-                      paddingHorizontal: 20,
-                      fontSize: 15,
-                      color: 'gray',
-                    }}>
-                    Tìm kiếm
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={{}}>
-              <TouchableOpacity
-                style={{
-                  height: 42,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: 40,
-                  backgroundColor: '#FEF7E7',
-                  borderRadius: 8,
-                }}
-                onPress={() => navigation.navigate('FavoriteProductsScreen')}>
-                <Ionicons name="heart-outline" size={24} color="#E07A0C" />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{ marginVertical: 5 }}>
+          <View style={{  }}>
+            <TouchableOpacity>
+            <Text style={{fontSize: 18, fontWeight:'500', marginVertical: 7}}>Danh Mục</Text>
+
+            </TouchableOpacity>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View
                 style={{ flexDirection: 'row', flexWrap: 'wrap', width: 379 }}>
@@ -276,15 +108,14 @@ function HomeScreen({ navigation, route }) {
           </View>
         </View>
         <View style={{ marginVertical: 20 }}>
-        
           <View>
-            <Text style={{ fontSize: 21, fontWeight: 'bold' , color:'#363636'}}>
+            <Text style={{ fontSize: 21, fontWeight: 'bold' }}>
               Trà Xanh - Chocolate
             </Text>
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -295,7 +126,7 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -303,11 +134,11 @@ function HomeScreen({ navigation, route }) {
               Chocolate
             </Text>
             <ItemCategoryComponent category={'Chocolate'} />
-            <Text style={{ fontSize: 21, fontWeight: '#363636' }}>Cà Phê</Text>
+            <Text style={{ fontSize: 21, fontWeight: 'bold' }}>Cà Phê</Text>
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -329,7 +160,7 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -340,7 +171,7 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -351,7 +182,7 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -359,7 +190,7 @@ function HomeScreen({ navigation, route }) {
               Cà Phê Tại Nhà
             </Text>
             <ItemCategoryComponent category={'Cà phê tại nhà'} />
-            <Text style={{ fontSize: 21, fontWeight: 'bold' , color:'#363636'}}>
+            <Text style={{ fontSize: 21, fontWeight: 'bold' }}>
               Trái Cây Xay 0°C
             </Text>
             <ItemCategoryComponent category={'Trái Cây Xay 0°C'} />
@@ -369,7 +200,7 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -380,7 +211,7 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -388,15 +219,17 @@ function HomeScreen({ navigation, route }) {
               Hi-Tea
             </Text>
             <ItemCategoryComponent category={'Hi-Tea Healthy'} />
-            <Text style={{ fontSize: 21, fontWeight: 'bold', color:'#363636' }}>Trà Sữa</Text>
+            <Text style={{ fontSize: 21, fontWeight: 'bold' }}>
+              Trà Sữa
+            </Text>
             <ItemCategoryComponent category={'Trà Sữa'} />
-            <Text style={{ fontSize: 21, fontWeight: 'bold', color:'#363636' }}>
+            <Text style={{ fontSize: 21, fontWeight: 'bold' }}>
               Thức Uống Đá Xay
             </Text>
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -404,13 +237,13 @@ function HomeScreen({ navigation, route }) {
               Đá xay Frosty
             </Text>
             <ItemCategoryComponent category={'Đá xay Frosty'} />
-            <Text style={{ fontSize: 21, fontWeight: 'bold', color:'#363636' }}>
+            <Text style={{ fontSize: 21, fontWeight: 'bold' }}>
               Bánh & Snack
             </Text>
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -421,19 +254,19 @@ function HomeScreen({ navigation, route }) {
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
               }}>
-              Bánh Ngọt
+            Bánh Ngọt
             </Text>
             <ItemCategoryComponent category={'Bánh ngọt'} />
 
             <Text
               style={{
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 7,
                 color: '#474747',
                 fontSize: 19,
                 fontWeight: '500',
@@ -442,29 +275,10 @@ function HomeScreen({ navigation, route }) {
             </Text>
             <ItemCategoryComponent category={'Bánh Pastry'} />
           </View>
-         
         </View>
-        
       </View>
-     
     </ScrollView>
-    {showButton && (
-        <TouchableOpacity
-          onPress={scrollToTop}
-          style={{
-            position: 'absolute',
-            bottom: 50,
-            right: 20,
-            backgroundColor: 'white',
-            borderRadius: 50,
-            padding: 10,
-            height: 50, width: 50
-          }}>
-          <AntDesign name="arrowup" size={28} color="#F58220" />
-        </TouchableOpacity>
-      )}
-    </View>
   );
 }
 
-export default HomeScreen;
+export default OrderScreen;

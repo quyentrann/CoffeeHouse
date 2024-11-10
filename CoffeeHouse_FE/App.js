@@ -1,14 +1,10 @@
-import "@expo/metro-runtime"
-import { NavigationContainer } from "@react-navigation/native";
+import "@expo/metro-runtime";
 import Auth from "./src/routers/router";
+import React from "react";
 
-if (typeof setImmediate === 'undefined') {
+if (typeof setImmediate === "undefined") {
   global.setImmediate = (fn) => {
     return setTimeout(fn, 0);
   };
 }
-export default () => (
-    <NavigationContainer>
-      <Auth />
-    </NavigationContainer>
-);
+export default Auth
