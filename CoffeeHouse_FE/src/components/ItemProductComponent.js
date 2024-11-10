@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import currency from 'currency.js';
 
 export default function ItemProductComponent({product}) {
   return (
@@ -27,8 +28,8 @@ export default function ItemProductComponent({product}) {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <Text style={{ fontSize: 18, color: '#3d3d3d' }}>
-                  {product.price}
+                <Text style={{ fontSize: 15, color: '#3d3d3d' }}>
+                  {product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}
                 </Text>
                 <TouchableOpacity>
                   <AntDesign

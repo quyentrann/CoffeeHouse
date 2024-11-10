@@ -2,63 +2,36 @@ import { Entypo } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Image, Text, TextInput, View } from 'react-native';
+import { setProducts, setUser } from '../redux_toolkit/slice';
+import axios from 'axios';
+import { fetchUsers, login } from '../api/user';
+import { getProducts } from '../api/product';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../redux_toolkit/slice';
 
 function LoginScreen({ navigation, route }) {
   const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
-  const fetchUsers = async () => {
-    try {
-      const resp = await fetch('http://localhost:8080/api/user');
-      const json = await resp.json();
-      setUsers(json);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  
+  async function getProductList() {
+    const data = await getProducts();
+    await dispatch(setProducts(data));
+  }
   useEffect(() => {
-    fetchUsers();
+    getProductList();
   }, []);
 
   const [phone, setPhone] = useState('01869188779');
   const [password, setPassWord] = useState('1111');
   const [errorMessage, setErrorMessage] = useState('');
 
-  function checkPhone(phone) {
-    const newPhone = users.find((value) => value.phone === phone);
-    return !!newPhone;
-  }
-
-  function checkPassWord(password) {
-    const newPass = users.find(
-      (value) => value.phone === phone && value.password === password
-    );
-    return !!newPass;
-  }
-
-  function checkUser() {
-    const newUser = users.find(
-      (value) => value.phone === phone && value.password === password
-    );
+  async function checkUser() {
+    
     if (!phone || !password) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin');
       return;
     }
     setErrorMessage('');
-    if (!checkPhone(phone)) {
-      setErrorMessage('Số điện thoại này chưa được đăng ký. ');
-      return;
-    }
-    setErrorMessage('');
-    if (!checkPassWord(password)) {
-      setErrorMessage('Mật khẩu không đúng. Vui lòng nhập lại');
-      return;
-    }
-    setErrorMessage('');
-    console.log(newUser);
-    
+    const newUser = await login(phone, password)
     if (newUser) {
       dispatch(setUser(newUser));
       console.log(newUser);
@@ -66,7 +39,7 @@ function LoginScreen({ navigation, route }) {
     }
     setErrorMessage('');
   }
-
+  
   useEffect(() => {
     if (route.params?.users) {
       setUsers(route.params?.users);

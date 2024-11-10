@@ -16,7 +16,8 @@ import { useSelector } from 'react-redux';
 import ItemCategoryComponent from '../src/components/ItemCategoryComponent';
 
 function HomeScreen({ navigation, route }) {
-  const user = useSelector((state) => state.userInfo);
+  const user = useSelector((state) => state.user.userInfo);
+  
   const scrollViewRef = useRef(null);
   const [showButton, setShowButton] = useState(false);
 

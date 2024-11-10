@@ -13,23 +13,18 @@ import {
 } from 'react-native';
 import ItemProductBagComponent from '../src/components/ItemProductBagComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../redux_toolkit/productSlice';
 
 function SearchScreen({ navigation }) {
   const [search, setSearch] = useState('');
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.product.items);
-  const [render, setRender] = useState(products);
+  const products = useSelector((state) => state.user.products);
   
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const [render, setRender] = useState(products);
 
   useEffect(() => {
     if (search === '') {
       setRender(products);
     } else {
-      const arr = products.filter((value) =>
+      const arr = products?.filter((value) =>
         value.name.toLowerCase().includes(search.toLowerCase())
       );
       setRender(arr);
