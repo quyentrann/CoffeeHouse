@@ -29,7 +29,7 @@ export default function OthersScreen({navigation}) {
               flex: 1,
               marginVertical: 8,
             }}>
-            <TouchableOpacity style={{ width: '49%' }}>
+            <TouchableOpacity style={{ width: '49%' }} onPress={()=> navigation.navigate("OrderHistoryScreen")}>
               <View
                 style={{
                   backgroundColor: 'white',

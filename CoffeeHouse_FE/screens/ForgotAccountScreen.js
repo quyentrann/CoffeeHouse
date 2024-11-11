@@ -1,70 +1,55 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
+import { getPhone, updatePassword } from '../api/user';
 
 export default function ForgotAccount({ navigation, route }) {
-  const users = route.params?.users;
+  const [user, setUser] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPasswordForm, setShowPasswordForm] = useState(false);
 
-  function checkPhoneExists(phone) {
-    const user = users.find((user) => user.phone === phone);
-    return !!user;
-  }
-
-  function handleCheckPhone() {
+  async function handleCheckPhone() {
     if (!phone) {
       setErrorMessage('Vui lòng nhập số điện thoại!');
       return;
     }
     setErrorMessage('');
-
-    if (!checkPhoneExists(phone)) {
+    const newPhone = await getPhone(phone);
+    console.log(newPhone);
+    if (!newPhone) {
       setErrorMessage('Số điện thoại không tồn tại.');
       return;
     }
-
-    setErrorMessage('');
+    setUser(newPhone);
     setShowPasswordForm(true);
   }
 
   async function handleResetPassword() {
-    const user = users.find((value) => value.phone === phone);
+    // const user = users.find((value) => value.phone === phone);
     if (!password || !confirmPassword) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin!');
       return;
     }
     setErrorMessage('');
-
+    
     if (password !== confirmPassword) {
       setErrorMessage('Mật khẩu xác nhận không khớp!');
       return;
     }
     setErrorMessage('');
-    const updateUser = {...user, passWord: password};
+    // const updateUser = { ...user, passWord: password };
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/user/${user.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updateUser),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Đăng ký không thành công');
-      }
-
-      setErrorMessage('');
-      Alert.alert('Thành công', 'Cập nhật mật khẩu thành công!');
-      navigation.navigate('Login', { users: users });
+      const updatedUser = await updatePassword(user.id, password);
+      if (updatedUser) {
+        console.log(updatedUser);
+        
+        // navigation.navigate('Login');
+      } 
     } catch (error) {
-      console.log(error);
+      setErrorMessage('Có lỗi xảy ra, vui lòng thử lại sau.');
+      console.error('Error in handleResetPassword:', error);
     }
   }
 
@@ -113,7 +98,7 @@ export default function ForgotAccount({ navigation, route }) {
               borderRadius: 15,
               marginTop: 10,
             }}
-            onPress={() => handleCheckPhone()}>
+            onPress={handleCheckPhone}>
             <Text style={{ fontSize: 18, color: 'white', fontWeight: '500' }}>
               Kiểm tra số điện thoại
             </Text>
@@ -172,7 +157,7 @@ export default function ForgotAccount({ navigation, route }) {
               borderRadius: 15,
               marginTop: 10,
             }}
-            onPress={() => handleResetPassword()}>
+            onPress={handleResetPassword}>
             <Text style={{ fontSize: 18, color: 'white', fontWeight: '500' }}>
               Đặt lại mật khẩu
             </Text>

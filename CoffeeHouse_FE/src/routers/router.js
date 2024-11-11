@@ -1,22 +1,24 @@
-import * as React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "../../screens/HomeScreen";
-import LoginScreen from "../../screens/LoginScreen";
-import ForgotAccount from "../../screens/ForgotAccountScreen";
-import SignUp from "../../screens/SignUpScreen";
-import { Provider } from "react-redux";
-import store from "../../redux_toolkit/store";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Feather from "@expo/vector-icons/Feather";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Entypo from "@expo/vector-icons/Entypo";
-import OthersScreen from "../../screens/OthersScreen";
-import SearchScreen from "../../screens/SearchScreen";
-import OrderScreen from "../../screens/OrderScreen";
-import FavoriteProductsScreen from "../../screens/FavoriteProductsScreen";
-import DealScreen from "../../screens/DealsScreen";
-import { NavigationContainer } from "@react-navigation/native";
+import * as React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from '../../screens/HomeScreen';
+import LoginScreen from '../../screens/LoginScreen';
+import ForgotAccount from '../../screens/ForgotAccountScreen';
+import SignUp from '../../screens/SignUpScreen';
+import { Provider } from 'react-redux';
+import store from '../../redux_toolkit/store';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Entypo from '@expo/vector-icons/Entypo';
+import OthersScreen from '../../screens/OthersScreen';
+import SearchScreen from '../../screens/SearchScreen';
+import OrderScreen from '../../screens/OrderScreen';
+import FavoriteProductsScreen from '../../screens/FavoriteProductsScreen';
+import DealScreen from '../../screens/DealsScreen';
+import OrderHistoryScreen from '../../screens/OrderHistoryScreen'
+import StoreScreen from '../../screens/StoreScreen'
+import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,16 +27,15 @@ const TabScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "#DF7422",
-        tabBarInactiveTintColor: "black",
+        tabBarActiveTintColor: '#DF7422',
+        tabBarInactiveTintColor: 'black',
         headerShown: false,
         tabBarStyle: {
           height: 65,
           paddingBottom: 10,
           paddingTop: 10,
         },
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Trang chủ"
         component={HomeScreen}
@@ -42,9 +43,9 @@ const TabScreen = () => {
           tabBarIcon: ({ color }) => (
             <Feather name="home" size={22} color={color} />
           ),
-          tabBarLabel: "Trang chủ",
+          tabBarLabel: 'Trang chủ',
           tabBarLabelStyle: {
-            fontWeight: "500",
+            fontWeight: '500',
           },
         }}
       />
@@ -55,22 +56,22 @@ const TabScreen = () => {
           tabBarIcon: ({ color }) => (
             <Feather name="coffee" size={22} color={color} />
           ),
-          tabBarLabel: "Đặt hàng",
+          tabBarLabel: 'Đặt hàng',
           tabBarLabelStyle: {
-            fontWeight: "500",
+            fontWeight: '500',
           },
         }}
       />
       <Tab.Screen
         name="Store"
-        component={LoginScreen}
+        component={StoreScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="storefront-outline" size={22} color={color} />
           ),
-          tabBarLabel: "Cửa hàng",
+          tabBarLabel: 'Cửa hàng',
           tabBarLabelStyle: {
-            fontWeight: "500",
+            fontWeight: '500',
           },
         }}
       />
@@ -85,9 +86,9 @@ const TabScreen = () => {
               color={color}
             />
           ),
-          tabBarLabel: "Ưu đãi",
+          tabBarLabel: 'Ưu đãi',
           tabBarLabelStyle: {
-            fontWeight: "500",
+            fontWeight: '500',
           },
         }}
       />
@@ -98,9 +99,9 @@ const TabScreen = () => {
           tabBarIcon: ({ color }) => (
             <Entypo name="menu" size={22} color={color} />
           ),
-          tabBarLabel: "Khác",
+          tabBarLabel: 'Khác',
           tabBarLabelStyle: {
-            fontWeight: "500",
+            fontWeight: '500',
           },
         }}
       />
@@ -115,8 +116,7 @@ export default function Auth() {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-          }}
-        >
+          }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotAccount" component={ForgotAccount} />
           <Stack.Screen name="SignUp" component={SignUp} />
@@ -125,6 +125,10 @@ export default function Auth() {
           <Stack.Screen
             name="FavoriteProductsScreen"
             component={FavoriteProductsScreen}
+          />
+          <Stack.Screen
+            name="OrderHistoryScreen"
+            component={OrderHistoryScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

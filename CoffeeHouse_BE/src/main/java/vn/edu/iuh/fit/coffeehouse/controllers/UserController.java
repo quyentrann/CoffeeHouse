@@ -6,6 +6,7 @@ import vn.edu.iuh.fit.coffeehouse.models.User;
 import vn.edu.iuh.fit.coffeehouse.services.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -33,9 +34,14 @@ public class UserController {
     }
 
     @PutMapping("forgot/{id}")
-    public User update(@PathVariable long id, @RequestBody User newUser) {
-        newUser.setId(id);
-        return userService.update(id, newUser);
+    public User updatePassword(@PathVariable long id, @RequestBody Map<String, String> requestBody) {
+        String newPassword = requestBody.get("password");
+        User user = userService.getUserByID(id);
+        if (user == null) {
+            throw new RuntimeException("User not found with id " + id);
+        }
+        user.setPassword(newPassword);
+        return userService.update(id, user);
     }
 
     @DeleteMapping("{id}")
