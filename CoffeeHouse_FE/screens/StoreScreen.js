@@ -15,72 +15,111 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import ItemCategoryComponent from '../src/components/ItemCategoryBagComponent';
-
+import Feather from '@expo/vector-icons/Feather';
 function StoreScreen({ navigation, route }) {
   return (
     <View style={{ flex: 1, backgroundColor: '#F5F5F5' }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          height: 40,
-          alignItems: 'center',
-          padding: 10,
-          backgroundColor: 'white',
-        }}>
-        <View style={{ flexDirection: 'row' }}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: '500',
-              paddingBottom: 3,
-              paddingLeft: 10,
-              fontWeight: 'bold',
-            }}>
-            Cửa hàng
-          </Text>
-        </View>
+      <View>
         <View
-          style={{ justifyContent: 'flex-end', flex: 1, flexDirection: 'row' }}>
-          <View style={{ justifyContent: 'center' }}>
+          style={{
+            flexDirection: 'row',
+            height: 40,
+            alignItems: 'center',
+            padding: 10,
+            backgroundColor: 'white',
+          }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: '500',
+                paddingBottom: 3,
+                paddingLeft: 10,
+                fontWeight: 'bold',
+              }}>
+              Cửa hàng
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'flex-end',
+              flex: 1,
+              flexDirection: 'row',
+            }}>
+            <View style={{ justifyContent: 'center' }}>
+              <TouchableOpacity
+                style={{
+                  justifyContent: 'center',
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: '#EBEBEB',
+                  width: 55,
+                  height: 30,
+                  borderRadius: 18,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View style={{ flexDirection: 'row', padding: 10 }}>
+                  <MaterialCommunityIcons
+                    name="ticket-percent-outline"
+                    size={20}
+                    color="#D27D2D"
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={{ justifyContent: 'center' }}>
+              <TouchableOpacity
+                style={{
+                  height: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 30,
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  borderColor: '#EBEBEB',
+                  margin: 5,
+                }}>
+                <Ionicons
+                  name="notifications-outline"
+                  size={20}
+                  color="black"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={{ margin: 15, borderRadius: 8 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               style={{
+                height: 35,
                 justifyContent: 'center',
+                width: 270,
                 borderRadius: 8,
-                borderWidth: 1,
-                borderColor: '#EBEBEB',
-                width: 55,
-                height: 30,
-                borderRadius: 18,
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: '#E3E3E3', padding: 10
               }}>
-              <View style={{ flexDirection: 'row', padding: 10 }}>
-                <MaterialCommunityIcons
-                  name="ticket-percent-outline"
-                  size={20}
-                  color="#D27D2D"
-                />
+              <View style={{ flexDirection: 'row' }}>
+                <Feather name="search" size={20} color="black" />
+                <Text style={{paddingLeft: 8, color:'gray'}}>Tìm kiếm</Text>
               </View>
             </TouchableOpacity>
-          </View>
-          <View style={{ justifyContent: 'center' }}>
-            <TouchableOpacity
-              style={{
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 30,
-                borderRadius: 20,
-                borderWidth: 1,
-                borderColor: '#EBEBEB',
-                margin: 5,
-              }}>
-              <Ionicons name="notifications-outline" size={20} color="black" />
+            <TouchableOpacity>
+              <View style={{ flexDirection: 'row' }}>
+                <Feather
+                  name="map"
+                  size={16}
+                  color="black"
+                  style={{ marginLeft: 15 }}
+                />
+                <Text style={{ fontWeight: 'bold' , paddingLeft: 7}}>Bản đồ</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
       </View>
       <View style={{ borderWidth: 0.2, borderColor: '#D1D1D1' }} />
+
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View
           style={{

@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 function LoginScreen({ navigation, route }) {
   const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
-  
+
   async function getProductList() {
     const data = await getProducts();
     await dispatch(setProducts(data));
@@ -25,13 +25,12 @@ function LoginScreen({ navigation, route }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   async function checkUser() {
-    
     if (!phone || !password) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin');
       return;
     }
     setErrorMessage('');
-    const newUser = await login(phone, password)
+    const newUser = await login(phone, password);
     if (newUser) {
       dispatch(setUser(newUser));
       console.log(newUser);
@@ -39,7 +38,7 @@ function LoginScreen({ navigation, route }) {
     }
     setErrorMessage('');
   }
-  
+
   useEffect(() => {
     if (route.params?.users) {
       setUsers(route.params?.users);
@@ -155,6 +154,7 @@ function LoginScreen({ navigation, route }) {
                 marginTop: 15,
               }}
               value={password}
+              secureTextEntry={true}
               onChangeText={(text) => setPassWord(text)}
             />
           </View>

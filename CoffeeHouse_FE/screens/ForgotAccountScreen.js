@@ -17,7 +17,7 @@ export default function ForgotAccount({ navigation, route }) {
     }
     setErrorMessage('');
     const newPhone = await getPhone(phone);
-    console.log(newPhone);
+    // console.log(newPhone);
     if (!newPhone) {
       setErrorMessage('Số điện thoại không tồn tại.');
       return;
@@ -27,7 +27,6 @@ export default function ForgotAccount({ navigation, route }) {
   }
 
   async function handleResetPassword() {
-    // const user = users.find((value) => value.phone === phone);
     if (!password || !confirmPassword) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin!');
       return;
@@ -39,7 +38,7 @@ export default function ForgotAccount({ navigation, route }) {
       return;
     }
     setErrorMessage('');
-    // const updateUser = { ...user, passWord: password };
+    
     try {
       const updatedUser = await updatePassword(user.id, password);
       if (updatedUser) {

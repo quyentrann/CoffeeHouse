@@ -17,7 +17,8 @@ import OrderScreen from '../../screens/OrderScreen';
 import FavoriteProductsScreen from '../../screens/FavoriteProductsScreen';
 import DealScreen from '../../screens/DealsScreen';
 import OrderHistoryScreen from '../../screens/OrderHistoryScreen'
-import StoreScreen from '../../screens/StoreScreen'
+import StoreScreen from '../../screens/StoreScreen';
+import ItemProductDetailComponent from '../components/ItemProductDetailComponent';
 import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
@@ -129,6 +130,10 @@ export default function Auth() {
           <Stack.Screen
             name="OrderHistoryScreen"
             component={OrderHistoryScreen}
+          />
+           <Stack.Screen
+            name="ItemProductDetailComponent"
+            component={ItemProductDetailComponent}
           />
         </Stack.Navigator>
       </NavigationContainer>

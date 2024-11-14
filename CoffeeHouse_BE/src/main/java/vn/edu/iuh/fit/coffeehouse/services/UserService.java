@@ -25,9 +25,9 @@ public class UserService {
     }
 
     @Transactional
-    public User update(long id , User product) {
-        product.setId(id);
-        return userRepository.save(product);
+    public User update(long id , User user) {
+        user.setId(id);
+        return userRepository.save(user);
     }
 
     @Transactional

@@ -34,8 +34,7 @@ public class UserController {
     }
 
     @PutMapping("forgot/{id}")
-    public User updatePassword(@PathVariable long id, @RequestBody Map<String, String> requestBody) {
-        String newPassword = requestBody.get("password");
+    public User updatePassword(@PathVariable long id, @RequestParam String newPassword) {
         User user = userService.getUserByID(id);
         if (user == null) {
             throw new RuntimeException("User not found with id " + id);

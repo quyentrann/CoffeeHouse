@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
+const basePath = process.env.EXPO_PUBLIC_API_KEY
 export default function ItemProductBagComponent({product}) {
   return (
     <TouchableOpacity>
@@ -15,7 +16,7 @@ export default function ItemProductBagComponent({product}) {
         }}>
         <View style={{ justifyContent: 'center', alignItems: 'center' , flex: 1, paddingVertical: 7, marginLeft: 16}}>
           <Image
-            source={{ uri: `http://localhost:8080/api${product.image}` }}
+            source={{ uri: `${basePath}${product.image}` }}
             style={{ height: 120, width: 120, borderRadius: 7 }}
           />
         </View>
