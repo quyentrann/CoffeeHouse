@@ -25,12 +25,15 @@ public class User extends Auditable{
 
     private String avatar;
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cart> carts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders;
-
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Favorite> favorites;
     @Override
     public String toString() {
         return "User{" +
@@ -39,7 +42,7 @@ public class User extends Auditable{
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", passWord='" + password + '\'' +
-                ", carts=" + carts +
+//                ", carts=" + carts +
                 ", orders=" + orders +
                 '}';
     }

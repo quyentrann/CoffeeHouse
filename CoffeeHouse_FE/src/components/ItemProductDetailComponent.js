@@ -37,7 +37,7 @@ export default function ItemProductDetailComponent({ route }) {
         </Text>
         {isLongText && (
           <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            <Text style={{ color: 'blue', marginTop: 5 , color:'#B35D03'}}>
+            <Text style={{ color: 'blue', marginTop: 5, color: '#B35D03' }}>
               {isExpanded ? 'Thu gọn' : '...Xem thêm'}
             </Text>
           </TouchableOpacity>
@@ -58,6 +58,8 @@ export default function ItemProductDetailComponent({ route }) {
       setQuantity(quantity - 1);
     }
   }
+
+  function addToCart(productId, userId, quantity) {}
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -68,30 +70,34 @@ export default function ItemProductDetailComponent({ route }) {
           backgroundColor: 'white',
           width: '100%',
           top: 0,
-          zIndex: 100,
-          justifyContent: 'space-between',
           alignItems: 'center',
-          height: 50
+          height: 50,
+          justifyContent:'space-between'
         }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            height: 30,
-            width: 30,
-            borderRadius: 20,
-          }}>
-          <Ionicons name="arrow-back-outline" size={26} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            height: 30,
-            width: 30,
-            borderRadius: 20,
-          }}>
-          <Badge badgeContent={2} color="primary">
-            <AntDesign name="shoppingcart" size={27} color="black" />
-          </Badge>
-        </TouchableOpacity>
+        <View style={{flex:1,marginRight: 260}}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              height: 30,
+              width: 30,
+              borderRadius: 20,
+            }}>
+            <Ionicons name="arrow-back-outline" size={26} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View style={{flex:1,  alignItems:'center'}}>
+          <TouchableOpacity
+            style={{
+              height: 30,
+              width: 30,
+              borderRadius: 20,
+            }}
+            onPress={() => navigation.navigate('CartScreen')}>
+            <Badge badgeContent={user.carts.length} color="primary">
+              <AntDesign name="shoppingcart" size={27} color="black" />
+            </Badge>
+          </TouchableOpacity>
+        </View>
       </View>
       <View
         style={{
@@ -106,7 +112,7 @@ export default function ItemProductDetailComponent({ route }) {
         <View style={{ backgroundColor: 'white' }}>
           <Image
             source={{ uri: `${basePath}${product.image}` }}
-            style={{ height: 310, width: '100%' }}
+            style={{ height: 320, width: '100%' }}
           />
           <View style={{ flexDirection: 'row', padding: 15, flex: 1 }}>
             <View style={{ flex: 1, justifyContent: 'space-around' }}>

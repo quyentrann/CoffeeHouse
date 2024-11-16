@@ -16,10 +16,11 @@ import SearchScreen from '../../screens/SearchScreen';
 import OrderScreen from '../../screens/OrderScreen';
 import FavoriteProductsScreen from '../../screens/FavoriteProductsScreen';
 import DealScreen from '../../screens/DealsScreen';
-import OrderHistoryScreen from '../../screens/OrderHistoryScreen'
+import OrderHistoryScreen from '../../screens/OrderHistoryScreen';
 import StoreScreen from '../../screens/StoreScreen';
 import ItemProductDetailComponent from '../components/ItemProductDetailComponent';
 import { NavigationContainer } from '@react-navigation/native';
+import CartScreen from '../../screens/CartScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -131,10 +132,11 @@ export default function Auth() {
             name="OrderHistoryScreen"
             component={OrderHistoryScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="ItemProductDetailComponent"
             component={ItemProductDetailComponent}
           />
+          <Stack.Screen name='CartScreen' component={CartScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

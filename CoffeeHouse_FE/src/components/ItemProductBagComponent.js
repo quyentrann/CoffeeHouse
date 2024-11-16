@@ -1,11 +1,15 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 
 const basePath = process.env.EXPO_PUBLIC_API_KEY
 export default function ItemProductBagComponent({product}) {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity  onPress={() => {
+      navigation.navigate('ItemProductDetailComponent', { product: product.id});
+    }}>
       <View
         style={{
           width: '100%',

@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import vn.edu.iuh.fit.coffeehouse.ids.Cart_Id;
+import vn.edu.iuh.fit.coffeehouse.ids.Favorite_Id;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "cart")
-@IdClass(Cart_Id.class)
-public class Cart {
-
+@Table(name = "favorite")
+@IdClass(Favorite_Id.class)
+public class Favorite {
     @Id
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -27,14 +27,10 @@ public class Cart {
     @JsonIgnore
     private User user;
 
-    private int quantity;
-
     @Override
     public String toString() {
-        return "Cart{" +
+        return "Favorite{" +
                 "product=" + product +
-//                ", user=" + user +
-                ", quantity=" + quantity +
                 '}';
     }
 }

@@ -13,10 +13,20 @@ import {
   View,
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import ItemProductBagComponent from '../src/components/ItemProductBagComponent';
 
 function FavoriteProductsScreen({ navigation }) {
+  const [favorite, setFavorites] = useState([]);
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.user.userInfo.favorites);
+  console.log(favorites);
+  
+  useEffect(() => {
+    setFavorites(favorites);
+  }, []);
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor:'white'}}>
       <View style={{backgroundColor:'white'}}>
         <View
           style={{ flexDirection: 'row', height: 50, alignItems: 'center' }}>
@@ -37,22 +47,37 @@ function FavoriteProductsScreen({ navigation }) {
           </View>
         </View>
         <View style={{ borderWidth: 0.2, borderColor: '#D1D1D1' }} />
-        <View style={{justifyContent:'center', alignItems:'center', height: 630}}>
-          <View
-            style={{
-              height: 70,
-              width:70,
-              backgroundColor: '#C9C9C9',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 40,
-            }}>
-            <FontAwesome name="star" size={35} color="white" />
+        <View style={{backgroundColor:'white'}}>
+        {favorites.length === 0 ? (
+          <View style={{ justifyContent: 'center', alignItems: 'center', height: 630 }}>
+            <View
+              style={{
+                height: 70,
+                width: 70,
+                backgroundColor: '#C9C9C9',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 40,
+              }}>
+              <FontAwesome name="star" size={35} color="white" />
+            </View>
+            <Text style={{ fontSize: 19, fontWeight: 'bold', paddingTop: 28, color: '#4A4A4A' }}>
+              Bạn chưa có sản phẩm yêu thích
+            </Text>
           </View>
-          <Text style={{ fontSize: 19, fontWeight: 'bold' , paddingTop: 28, color:'#4A4A4A'}}>
-            Bạn chưa có sản phẩm yêu thích
-          </Text>
+        ) : (
+          <FlatList
+        data={favorite}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => {
+          return (
+            <ItemProductBagComponent product={item.product} />
+          );
+        }}
+      />
+        )}
         </View>
+        
       </View>
     </ScrollView>
   );
