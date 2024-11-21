@@ -24,7 +24,10 @@ function FavoriteProductsScreen({ navigation }) {
   
   useEffect(() => {
     setFavorites(favorites);
-  }, []);
+  }, [favorites]);
+
+
+  
   return (
     <ScrollView style={{backgroundColor:'white'}}>
       <View style={{backgroundColor:'white'}}>

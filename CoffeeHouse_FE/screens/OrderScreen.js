@@ -148,9 +148,9 @@ function OrderScreen({ navigation, route }) {
                       }}>
                       <TouchableOpacity
                         style={{
-                          justifyContent: 'center',
+                          justifyContent: 'center', 
                           alignItems: 'center',
-                        }}>
+                        }} onPress={()=> navigation.navigate("CategoryProductScreen", {item})}>
                         <Image
                           source={item.image}
                           style={{ height: 60, width: 60, borderRadius: 50 }}

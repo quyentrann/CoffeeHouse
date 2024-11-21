@@ -31,12 +31,13 @@ function LoginScreen({ navigation, route }) {
     }
     setErrorMessage('');
     const newUser = await login(phone, password);
+    console.log(newUser);
     if (newUser) {
       dispatch(setUser(newUser));
-      console.log(newUser);
       navigation.navigate('Home', { user: newUser });
+    }else{
+      setErrorMessage('Vui lòng nhập đúng thông tin');
     }
-    setErrorMessage('');
   }
 
   useEffect(() => {

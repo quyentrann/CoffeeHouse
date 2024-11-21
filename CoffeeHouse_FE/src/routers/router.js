@@ -21,6 +21,7 @@ import StoreScreen from '../../screens/StoreScreen';
 import ItemProductDetailComponent from '../components/ItemProductDetailComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import CartScreen from '../../screens/CartScreen';
+import CategoryProductScreen from '../../screens/CategoryProductScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -137,6 +138,7 @@ export default function Auth() {
             component={ItemProductDetailComponent}
           />
           <Stack.Screen name='CartScreen' component={CartScreen}/>
+          <Stack.Screen name='CategoryProductScreen' component={CategoryProductScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

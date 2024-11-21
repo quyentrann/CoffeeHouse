@@ -17,7 +17,6 @@ export default function ForgotAccount({ navigation, route }) {
     }
     setErrorMessage('');
     const newPhone = await getPhone(phone);
-    // console.log(newPhone);
     if (!newPhone) {
       setErrorMessage('Số điện thoại không tồn tại.');
       return;
@@ -27,25 +26,27 @@ export default function ForgotAccount({ navigation, route }) {
   }
 
   async function handleResetPassword() {
+    const newUser = { ...user };
+    console.log(newUser);
+
     if (!password || !confirmPassword) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin!');
       return;
     }
     setErrorMessage('');
-    
+
     if (password !== confirmPassword) {
       setErrorMessage('Mật khẩu xác nhận không khớp!');
       return;
     }
     setErrorMessage('');
-    
+
     try {
-      const updatedUser = await updatePassword(user.id, password);
+      const updatedUser = await updatePassword(newUser.id, password);
+
       if (updatedUser) {
-        console.log(updatedUser);
-        
-        // navigation.navigate('Login');
-      } 
+        navigation.navigate('Login');
+      }
     } catch (error) {
       setErrorMessage('Có lỗi xảy ra, vui lòng thử lại sau.');
       console.error('Error in handleResetPassword:', error);

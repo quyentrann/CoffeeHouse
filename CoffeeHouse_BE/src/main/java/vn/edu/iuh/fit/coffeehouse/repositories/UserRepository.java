@@ -7,4 +7,5 @@ import vn.edu.iuh.fit.coffeehouse.models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     public User getUserByPhoneAndPassword(String phone , String password);
     public User getUserByPhone(String phone);
+    public User getUserByFullName(String fullName);
 }

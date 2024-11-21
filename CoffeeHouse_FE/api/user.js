@@ -30,10 +30,9 @@ async function login(phone, password) {
 
 async function getPhone(phone) {
   try {
-    const resp = await axios.get(
-     `${basePath}/user/getUserByPhone`,
-      { params: { phone } }
-    );
+    const resp = await axios.get(`${basePath}/user/getUserByPhone`, {
+      params: { phone },
+    });
     const json = await resp.data;
     return json;
   } catch (error) {
@@ -43,10 +42,15 @@ async function getPhone(phone) {
 
 async function updatePassword(userId, newPassword) {
   try {
-    const params = {
-      newPassword: newPassword,
-    };
-    const resp = await axios.put(`/user/forgot/${userId}`, { params });
+    const resp = await axios.put(
+      `${basePath}/user/forgot/${userId}`,
+      newPassword,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     const json = await resp.data;
     return json;
   } catch (error) {
@@ -54,4 +58,38 @@ async function updatePassword(userId, newPassword) {
   }
 }
 
-export { fetchUsers, login, getPhone, updatePassword };
+async function addFavorite(userId, productId) {
+  const params =
+    {
+      userId:userId,
+      productId:productId
+    }
+  
+  try {
+    const resp = await axios.get(`${basePath}/user/addFavorite`,{params})
+    const json = await resp.data;
+    return json;
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+async function deleteFavorite(userId, productId) {
+  const params = {
+    userId: userId,
+    productId: productId
+  };
+
+  try {
+    const resp = await axios.delete(`${basePath}/user/deleteFavorite`, { params });
+    const json = resp.data;
+    return json;
+  } catch (error) {
+    console.log(error);
+    
+  }
+  
+}
+
+export { fetchUsers, login, getPhone, updatePassword ,addFavorite, deleteFavorite};

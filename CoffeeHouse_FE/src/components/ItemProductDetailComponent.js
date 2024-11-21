@@ -7,22 +7,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Badge } from '@mui/material';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Zocial from '@expo/vector-icons/Zocial';
+import { RadioButton } from 'react-native-paper';
+import { addFavorite, deleteFavorite } from '../../api/user';
+import { setUser } from '../../redux_toolkit/slice';
 
 const basePath = process.env.EXPO_PUBLIC_API_KEY;
 export default function ItemProductDetailComponent({ route }) {
   const [quantity, setQuantity] = useState(1);
+  const [isFavorite, setIsFavorite] = useState(false);
   const navigation = useNavigation();
   const user = useSelector((state) => state.user.userInfo);
   const products = useSelector((state) => state.user.products);
   const product = products.find((value) => value.id === route.params.product);
+  const [checked, setChecked] = React.useState('Vừa');
+  const [price, setPrice] = useState(product?.price);
+  console.log(price);
+  const dispatch = useDispatch();
 
   const ProductDescription = ({ description }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -47,8 +55,8 @@ export default function ItemProductDetailComponent({ route }) {
   };
 
   function getSize(name) {
-    const newPrice = product.sizes.find((value) => value.name === name);
-    return newPrice ? newPrice.price.toLocaleString() : '0';
+    const size = product?.sizes?.find((value) => value.name === name);
+    return size ? size.price : 0;
   }
 
   function changeQuantity(status) {
@@ -59,7 +67,48 @@ export default function ItemProductDetailComponent({ route }) {
     }
   }
 
+  useEffect(() => {
+    if (product?.sizes && product.sizes.length > 0) {
+      const initialSize = product.sizes[0].name;
+      setPrice(getSize(initialSize));
+    }
+  }, [product]);
+
   function addToCart(productId, userId, quantity) {}
+
+  useEffect(() => {
+   setIsFavorite(true)
+  }, [user, product]);
+
+  //   async function addToFavorite(useId, productId) {
+  //      const data= await addFavorite(useId, productId)
+  //     dispatch(setUser(data))
+  //     console.log(user);
+
+  //   }
+
+  //   async function deleteToFavorite(useId, productId) {
+  //     const data= await deleteFavorite(useId, productId)
+  //    dispatch(setUser(data))
+  //    console.log(user);
+
+  //  }
+
+  const handleFavoriteToggle = async () => {
+    try {
+      let updatedUser;
+      if (isFavorite) {
+        updatedUser = await deleteFavorite(user.id, product.id);
+      } else {
+        updatedUser = await addFavorite(user.id, product.id);
+      }
+      dispatch(setUser(updatedUser));
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('Lỗi khi cập nhật yêu thích:', error);
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -72,9 +121,9 @@ export default function ItemProductDetailComponent({ route }) {
           top: 0,
           alignItems: 'center',
           height: 50,
-          justifyContent:'space-between'
+          justifyContent: 'space-between',
         }}>
-        <View style={{flex:1,marginRight: 260}}>
+        <View style={{ flex: 1, marginRight: 260 }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
@@ -85,7 +134,7 @@ export default function ItemProductDetailComponent({ route }) {
             <Ionicons name="arrow-back-outline" size={26} color="black" />
           </TouchableOpacity>
         </View>
-        <View style={{flex:1,  alignItems:'center'}}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <TouchableOpacity
             style={{
               height: 30,
@@ -125,19 +174,26 @@ export default function ItemProductDetailComponent({ route }) {
                   fontWeight: '500',
                   paddingVertical: 10,
                 }}>
-                {Number(product.price).toLocaleString()}
-                <Text style={{ fontSize: 16 }}>đ</Text>
+                {Number(price).toLocaleString('it-IT', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
               </Text>
 
               <ProductDescription description={product.description} />
             </View>
             <View style={{ flex: 0.1 }}>
-              <TouchableOpacity>
-                <FontAwesome5
+              <TouchableOpacity
+                onPress={handleFavoriteToggle}
+                style={{
+                  padding: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <AntDesign
                   name="heart"
                   size={24}
-                  color="black"
-                  style={{ marginTop: 10 }}
+                  color={isFavorite ? 'red' : 'black'}
                 />
               </TouchableOpacity>
             </View>
@@ -158,32 +214,35 @@ export default function ItemProductDetailComponent({ route }) {
               Chọn 1 loại size
             </Text>
           </View>
-          <View
-            style={{
-              height: 175,
-              justifyContent: 'space-around',
-              paddingVertical: 20,
-            }}>
-            <TouchableOpacity>
+          <RadioButton.Group
+            onValueChange={(value) => {
+              setChecked(value);
+              const newPrice = getSize(value);
+              setPrice(newPrice);
+            }}
+            value={checked}>
+            <View
+              style={{
+                height: 175,
+                justifyContent: 'space-around',
+                paddingVertical: 20,
+              }}>
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View
+                <TouchableOpacity
                   style={{
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                  }}>
-                  <View
-                    style={{
-                      height: 16,
-                      width: 16,
-                      borderWidth: 2,
-                      borderRadius: 15,
-                    }}
+                  }}
+                  onPress={() => setChecked('Lớn')}>
+                  <RadioButton
+                    value="Lớn"
+                    status={checked === 'Lớn' ? 'checked' : 'unchecked'}
                   />
                   <Text
                     style={{
@@ -192,31 +251,32 @@ export default function ItemProductDetailComponent({ route }) {
                     }}>
                     Lớn
                   </Text>
-                </View>
-                <Text style={{ fontSize: 17 }}>{getSize('Lớn')}đ</Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 17 }}>
+                  {getSize('Lớn').toLocaleString('it-IT', {
+                    style: 'currency',
+                    currency: 'VND',
+                  })}
+                </Text>
               </View>
-            </TouchableOpacity>
-            <View style={{ borderWidth: 0.2, borderColor: '#F0F0F0' }} />
-            <TouchableOpacity>
+
+              <View style={{ borderWidth: 0.2, borderColor: '#F0F0F0' }} />
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View
+                <TouchableOpacity
                   style={{
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                  }}>
-                  <View
-                    style={{
-                      height: 16,
-                      width: 16,
-                      borderWidth: 2,
-                      borderRadius: 15,
-                    }}
+                  }}
+                  onPress={() => setChecked('Vừa')}>
+                  <RadioButton
+                    value="Vừa"
+                    status={checked === 'Vừa' ? 'checked' : 'unchecked'}
                   />
                   <Text
                     style={{
@@ -225,31 +285,32 @@ export default function ItemProductDetailComponent({ route }) {
                     }}>
                     Vừa
                   </Text>
-                </View>
-                <Text style={{ fontSize: 17 }}>{getSize('Vừa')}đ</Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 17 }}>
+                  {getSize('Vừa').toLocaleString('it-IT', {
+                    style: 'currency',
+                    currency: 'VND',
+                  })}
+                </Text>
               </View>
-            </TouchableOpacity>
-            <View style={{ borderWidth: 0.5, borderColor: '#F0F0F0' }} />
-            <TouchableOpacity>
+
+              <View style={{ borderWidth: 0.5, borderColor: '#F0F0F0' }} />
               <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View
+                <TouchableOpacity
                   style={{
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                  }}>
-                  <View
-                    style={{
-                      height: 16,
-                      width: 16,
-                      borderWidth: 2,
-                      borderRadius: 15,
-                    }}
+                  }}
+                  onPress={() => setChecked('Nhỏ')}>
+                  <RadioButton
+                    value="Nhỏ"
+                    status={checked === 'Nhỏ' ? 'checked' : 'unchecked'}
                   />
                   <Text
                     style={{
@@ -258,11 +319,16 @@ export default function ItemProductDetailComponent({ route }) {
                     }}>
                     Nhỏ
                   </Text>
-                </View>
-                <Text style={{ fontSize: 17 }}>{getSize('Nhỏ')}đ</Text>
+                </TouchableOpacity>
+                <Text style={{ fontSize: 17 }}>
+                  {getSize('Nhỏ').toLocaleString('it-IT', {
+                    style: 'currency',
+                    currency: 'VND',
+                  })}
+                </Text>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </RadioButton.Group>
         </View>
 
         <View
@@ -363,7 +429,10 @@ export default function ItemProductDetailComponent({ route }) {
                   textAlign: 'center',
                   fontWeight: '500',
                 }}>
-                {(product.price * quantity).toLocaleString()}đ
+                {(price * quantity).toLocaleString('it-IT', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
