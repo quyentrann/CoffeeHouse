@@ -3,7 +3,9 @@ package vn.edu.iuh.fit.coffeehouse.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vn.edu.iuh.fit.coffeehouse.models.Product;
 import vn.edu.iuh.fit.coffeehouse.models.User;
+import vn.edu.iuh.fit.coffeehouse.repositories.ProductRepository;
 import vn.edu.iuh.fit.coffeehouse.repositories.UserRepository;
 
 import java.util.List;
@@ -25,9 +27,9 @@ public class UserService {
     }
 
     @Transactional
-    public User update(long id , User product) {
-        product.setId(id);
-        return userRepository.save(product);
+    public User update(long id , User user) {
+        user.setId(id);
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -45,11 +47,18 @@ public class UserService {
         return false;
     }
 
+
     public User getUserByPhoneAndPassword(String phone, String password){
         return userRepository.getUserByPhoneAndPassword(phone,password);
     }
 
     public User getUserByPhone(String phone){
         return userRepository.getUserByPhone(phone);
+    }
+    public  User signUpUser(User user){
+        return userRepository.save(user);
+    }
+    public User getUserByFullName(String fullName){
+        return userRepository.getUserByFullName(fullName);
     }
 }

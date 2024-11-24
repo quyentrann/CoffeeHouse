@@ -254,7 +254,7 @@ function HomeScreen({ navigation, route }) {
                       style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                      }}>
+                      }} onPress={()=> navigation.navigate("CategoryProductScreen", {item})}>
                       <Image
                         source={item.image}
                         style={{ height: 60, width: 60, borderRadius: 50 }}
@@ -303,7 +303,7 @@ function HomeScreen({ navigation, route }) {
               Chocolate
             </Text>
             <ItemCategoryComponent category={'Chocolate'} />
-            <Text style={{ fontSize: 21, fontWeight: '#363636' }}>Cà Phê</Text>
+            <Text style={{ fontSize: 21, fontWeight: 'bold', color:'#363636' }}>Cà Phê</Text>
             <Text
               style={{
                 paddingHorizontal: 15,

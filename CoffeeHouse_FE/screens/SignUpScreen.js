@@ -41,7 +41,7 @@ function SignUpScreen({ navigation, route }) {
     }
     const newUser = { fullName: name, phone: phone, passWord: password };
     try {
-      const response = await fetch('http://localhost:8080/api/user', {
+      const response = await fetch('http://localhost:8080/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ function SignUpScreen({ navigation, route }) {
         body: JSON.stringify({
           fullName: name,
           phone: phone,
-          passWord: password,
+          password: password,
         }),
       });
 
