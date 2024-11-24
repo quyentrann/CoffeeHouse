@@ -11,7 +11,6 @@ import {
 
 function SignUpScreen({ navigation, route }) {
   const users = route.params.users;
-  console.log(users);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');

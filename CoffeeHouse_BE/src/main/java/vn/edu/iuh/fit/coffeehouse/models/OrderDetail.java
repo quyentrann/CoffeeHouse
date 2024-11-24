@@ -16,13 +16,13 @@ import vn.edu.iuh.fit.coffeehouse.ids.OrderDetail_Id;
 @IdClass(OrderDetail_Id.class)
 public class OrderDetail {
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order order;
 
     @Id
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties(value = {"toppings", "carts", "sizes","toppings","deleted", "lastModifiedDate", "createdDate"})
     private Product product;

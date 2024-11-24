@@ -5,7 +5,9 @@ import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import vn.edu.iuh.fit.coffeehouse.ids.Cart_Id;
 import vn.edu.iuh.fit.coffeehouse.models.*;
+import vn.edu.iuh.fit.coffeehouse.repositories.CartRepository;
 import vn.edu.iuh.fit.coffeehouse.repositories.OrderDetailRepository;
 import vn.edu.iuh.fit.coffeehouse.repositories.OrderRepository;
 import vn.edu.iuh.fit.coffeehouse.services.ProductService;
@@ -17,19 +19,13 @@ import java.util.List;
 @SpringBootTest
 class CoffeeHouseApplicationTests {
     @Autowired
-    private UserService userService;
+    private CartRepository cartRepository;
     @Test
     void test() {
-        Faker faker = new Faker();
-        for (int i = 0; i < 10; i++) {
-            String phone = "0" + faker.number().digits(10);
-            User user = User.builder()
-                    .fullName(faker.name().fullName())
-                    .avatar(faker.internet().image())
-                    .phone(phone)
-                    .build();
-            userService.create(user);
-        }
+         long userId = 1;
+        long isp = 4;
+
+        cartRepository.deleteByProductAndUser(userId,isp);
     }
 
 }

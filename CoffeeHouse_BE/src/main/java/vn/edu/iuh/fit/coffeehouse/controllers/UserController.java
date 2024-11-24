@@ -1,10 +1,13 @@
 package vn.edu.iuh.fit.coffeehouse.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.iuh.fit.coffeehouse.models.Cart;
 import vn.edu.iuh.fit.coffeehouse.models.Favorite;
 import vn.edu.iuh.fit.coffeehouse.models.Product;
 import vn.edu.iuh.fit.coffeehouse.models.User;
+import vn.edu.iuh.fit.coffeehouse.repositories.CartRepository;
 import vn.edu.iuh.fit.coffeehouse.repositories.FavoriteRepository;
 import vn.edu.iuh.fit.coffeehouse.services.UserService;
 
@@ -20,6 +23,9 @@ public class UserController {
 
     @Autowired
     private FavoriteRepository favoriteRepository;
+    @Autowired
+    private CartRepository cartRepository;
+
     @GetMapping
     public List<User> getAll() {
         return userService.getAll();
@@ -85,5 +91,18 @@ public class UserController {
             favoriteRepository.delete(favorite);
         }
         return userService.getUserByID((userId));
+    }
+
+    @GetMapping("addCart")
+    @Transactional
+    public User addCart(@RequestParam long userId, @RequestParam long productId, @RequestParam int quantity){
+        User user = userService.getUserByID((userId));
+        Cart cart = Cart.builder()
+                .user(user)
+                .quantity(quantity)
+                .product(Product.builder().id(productId).build())
+                .build();
+        user.getCarts().add(cart);
+        return userService.update(userId,user);
     }
 }

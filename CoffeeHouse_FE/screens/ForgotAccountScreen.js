@@ -27,7 +27,6 @@ export default function ForgotAccount({ navigation, route }) {
 
   async function handleResetPassword() {
     const newUser = { ...user };
-    console.log(newUser);
 
     if (!password || !confirmPassword) {
       setErrorMessage('Vui lòng nhập đầy đủ thông tin!');

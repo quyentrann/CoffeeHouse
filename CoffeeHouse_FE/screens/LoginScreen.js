@@ -31,7 +31,6 @@ function LoginScreen({ navigation, route }) {
     }
     setErrorMessage('');
     const newUser = await login(phone, password);
-    console.log(newUser);
     if (newUser) {
       dispatch(setUser(newUser));
       navigation.navigate('Home', { user: newUser });

@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "order_id")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;

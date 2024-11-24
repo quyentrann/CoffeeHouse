@@ -1,6 +1,5 @@
-import axios from 'axios';
+import axios from "axios";
 const basePath = process.env.EXPO_PUBLIC_API_KEY;
-console.log(basePath);
 
 async function fetchUsers() {
   try {
@@ -47,7 +46,7 @@ async function updatePassword(userId, newPassword) {
       newPassword,
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -59,37 +58,61 @@ async function updatePassword(userId, newPassword) {
 }
 
 async function addFavorite(userId, productId) {
-  const params =
-    {
-      userId:userId,
-      productId:productId
-    }
-  
+  const params = {
+    userId: userId,
+    productId: productId,
+  };
+
   try {
-    const resp = await axios.get(`${basePath}/user/addFavorite`,{params})
+    const resp = await axios.get(`${basePath}/user/addFavorite`, { params });
     const json = await resp.data;
     return json;
   } catch (error) {
     console.log(error);
-    
   }
 }
 
 async function deleteFavorite(userId, productId) {
   const params = {
     userId: userId,
-    productId: productId
+    productId: productId,
   };
 
   try {
-    const resp = await axios.delete(`${basePath}/user/deleteFavorite`, { params });
+    const resp = await axios.delete(`${basePath}/user/deleteFavorite`, {
+      params,
+    });
     const json = resp.data;
     return json;
   } catch (error) {
     console.log(error);
-    
   }
-  
 }
 
-export { fetchUsers, login, getPhone, updatePassword ,addFavorite, deleteFavorite};
+async function addCart(userId, productId, quantity) {
+  const params = {
+    userId: userId,
+    productId: productId,
+    quantity: quantity
+  };
+
+  try {
+    const resp = await axios.get(`${basePath}/user/addCart`, {
+      params,
+    });
+    const json = resp.data;
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export {
+  fetchUsers,
+  login,
+  getPhone,
+  updatePassword,
+  addFavorite,
+  deleteFavorite,
+  addCart
+};

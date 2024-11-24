@@ -16,7 +16,6 @@ import {
     const products = useSelector((state) => state.user.products);
   
     const listCategory = products.filter((value) => value.category === category);
-    console.log(listCategory);
   
     return (
       <FlatList

@@ -16,13 +16,13 @@ import vn.edu.iuh.fit.coffeehouse.ids.Cart_Id;
 public class Cart {
 
     @Id
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties(value = {"toppings", "carts", "deleted", "lastModifiedDate", "createdDate"})
     private Product product;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;

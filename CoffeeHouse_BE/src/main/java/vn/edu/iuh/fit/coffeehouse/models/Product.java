@@ -30,10 +30,6 @@ public class Product extends Auditable{
     private String category;
     private Double price;
 
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-    private List<Topping> toppings;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<ProductSize> sizes ;
 
@@ -49,8 +45,6 @@ public class Product extends Auditable{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", images=" + image +
-                ", toppings=" + toppings +
-//                ", carts=" + carts +
                 '}';
     }
 }

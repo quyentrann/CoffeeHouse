@@ -20,7 +20,6 @@ function FavoriteProductsScreen({ navigation }) {
   const [favorite, setFavorites] = useState([]);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.user.userInfo.favorites);
-  console.log(favorites);
   
   useEffect(() => {
     setFavorites(favorites);

@@ -6,18 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React, { useEffect, useState } from 'react';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { Badge } from '@mui/material';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useSelector, useDispatch } from 'react-redux';
-import Zocial from '@expo/vector-icons/Zocial';
-import { RadioButton } from 'react-native-paper';
-import { addFavorite, deleteFavorite } from '../../api/user';
-import { setUser } from '../../redux_toolkit/slice';
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import { Badge } from "@mui/material";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { useSelector, useDispatch } from "react-redux";
+import Zocial from "@expo/vector-icons/Zocial";
+import { RadioButton } from "react-native-paper";
+import { addCart, addFavorite, deleteFavorite } from "../../api/user";
+import { setUser } from "../../redux_toolkit/slice";
 
 const basePath = process.env.EXPO_PUBLIC_API_KEY;
 export default function ItemProductDetailComponent({ route }) {
@@ -27,9 +27,8 @@ export default function ItemProductDetailComponent({ route }) {
   const user = useSelector((state) => state.user.userInfo);
   const products = useSelector((state) => state.user.products);
   const product = products.find((value) => value.id === route.params.product);
-  const [checked, setChecked] = React.useState('Vừa');
+  const [checked, setChecked] = React.useState("Vừa");
   const [price, setPrice] = useState(product?.price);
-  console.log(price);
   const dispatch = useDispatch();
 
   const ProductDescription = ({ description }) => {
@@ -40,13 +39,14 @@ export default function ItemProductDetailComponent({ route }) {
         <Text
           numberOfLines={isExpanded ? 0 : 2}
           ellipsizeMode="tail"
-          style={{ fontSize: 16 }}>
+          style={{ fontSize: 16 }}
+        >
           {description}
         </Text>
         {isLongText && (
           <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            <Text style={{ color: 'blue', marginTop: 5, color: '#B35D03' }}>
-              {isExpanded ? 'Thu gọn' : '...Xem thêm'}
+            <Text style={{ color: "blue", marginTop: 5, color: "#B35D03" }}>
+              {isExpanded ? "Thu gọn" : "...Xem thêm"}
             </Text>
           </TouchableOpacity>
         )}
@@ -60,9 +60,9 @@ export default function ItemProductDetailComponent({ route }) {
   }
 
   function changeQuantity(status) {
-    if (status === 'increase') {
+    if (status === "increase") {
       setQuantity(quantity + 1);
-    } else if (status === 'reduce' && quantity > 1) {
+    } else if (status === "reduce" && quantity > 1) {
       setQuantity(quantity - 1);
     }
   }
@@ -74,25 +74,19 @@ export default function ItemProductDetailComponent({ route }) {
     }
   }, [product]);
 
-  function addToCart(productId, userId, quantity) {}
+  async function addToCart(userId, productId, quantity) {
+    const rep = await addCart(userId, productId, quantity)
+    if (rep) {
+      dispatch(setUser(rep));   
+    }
+  }
 
   useEffect(() => {
-   setIsFavorite(true)
-  }, [user, product]);
-
-  //   async function addToFavorite(useId, productId) {
-  //      const data= await addFavorite(useId, productId)
-  //     dispatch(setUser(data))
-  //     console.log(user);
-
-  //   }
-
-  //   async function deleteToFavorite(useId, productId) {
-  //     const data= await deleteFavorite(useId, productId)
-  //    dispatch(setUser(data))
-  //    console.log(user);
-
-  //  }
+    const like = !!user.favorites.find(
+      (item) => item.product.id === product.id
+    );
+    setIsFavorite(like);
+  }, [user.favorites, product]);
 
   const handleFavoriteToggle = async () => {
     try {
@@ -105,7 +99,7 @@ export default function ItemProductDetailComponent({ route }) {
       dispatch(setUser(updatedUser));
       setIsFavorite(!isFavorite);
     } catch (error) {
-      console.error('Lỗi khi cập nhật yêu thích:', error);
+      console.error("Lỗi khi cập nhật yêu thích:", error);
     }
   };
 
@@ -113,16 +107,17 @@ export default function ItemProductDetailComponent({ route }) {
     <View style={{ flex: 1 }}>
       <View
         style={{
-          flexDirection: 'row',
+          flexDirection: "row",
           paddingHorizontal: 15,
           // position: 'absolute',
-          backgroundColor: 'white',
-          width: '100%',
+          backgroundColor: "white",
+          width: "100%",
           top: 0,
-          alignItems: 'center',
+          alignItems: "center",
           height: 50,
-          justifyContent: 'space-between',
-        }}>
+          justifyContent: "space-between",
+        }}
+      >
         <View style={{ flex: 1, marginRight: 260 }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -130,19 +125,21 @@ export default function ItemProductDetailComponent({ route }) {
               height: 30,
               width: 30,
               borderRadius: 20,
-            }}>
+            }}
+          >
             <Ionicons name="arrow-back-outline" size={26} color="black" />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, alignItems: 'center' }}>
+        <View style={{ flex: 1, alignItems: "center" }}>
           <TouchableOpacity
             style={{
               height: 30,
               width: 30,
               borderRadius: 20,
             }}
-            onPress={() => navigation.navigate('CartScreen')}>
-            <Badge badgeContent={user.carts.length} color="primary">
+            onPress={() => navigation.navigate("CartScreen")}
+          >
+            <Badge badgeContent={user?.carts?.length} color="primary">
               <AntDesign name="shoppingcart" size={27} color="black" />
             </Badge>
           </TouchableOpacity>
@@ -151,32 +148,34 @@ export default function ItemProductDetailComponent({ route }) {
       <View
         style={{
           borderWidth: 1,
-          borderColor: '#D1D1D1',
-          backgroundColor: 'white',
+          borderColor: "#D1D1D1",
+          backgroundColor: "white",
         }}
       />
       <ScrollView
-        style={{ backgroundColor: '#c6c6c6' }}
-        contentContainerStyle={{ paddingBottom: 20 }}>
-        <View style={{ backgroundColor: 'white' }}>
+        style={{ backgroundColor: "#c6c6c6" }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      >
+        <View style={{ backgroundColor: "white" }}>
           <Image
             source={{ uri: `${basePath}${product.image}` }}
-            style={{ height: 320, width: '100%' }}
+            style={{ height: 320, width: "100%" }}
           />
-          <View style={{ flexDirection: 'row', padding: 15, flex: 1 }}>
-            <View style={{ flex: 1, justifyContent: 'space-around' }}>
-              <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+          <View style={{ flexDirection: "row", padding: 15, flex: 1 }}>
+            <View style={{ flex: 1, justifyContent: "space-around" }}>
+              <Text style={{ fontSize: 22, fontWeight: "bold" }}>
                 {product.name}
               </Text>
               <Text
                 style={{
                   fontSize: 18,
-                  fontWeight: '500',
+                  fontWeight: "500",
                   paddingVertical: 10,
-                }}>
-                {Number(price).toLocaleString('it-IT', {
-                  style: 'currency',
-                  currency: 'VND',
+                }}
+              >
+                {Number(price).toLocaleString("it-IT", {
+                  style: "currency",
+                  currency: "VND",
                 })}
               </Text>
 
@@ -187,13 +186,14 @@ export default function ItemProductDetailComponent({ route }) {
                 onPress={handleFavoriteToggle}
                 style={{
                   padding: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <AntDesign
                   name="heart"
                   size={24}
-                  color={isFavorite ? 'red' : 'black'}
+                  color={isFavorite ? "red" : "black"}
                 />
               </TouchableOpacity>
             </View>
@@ -202,15 +202,16 @@ export default function ItemProductDetailComponent({ route }) {
         <View
           style={{
             marginTop: 9,
-            backgroundColor: 'white',
+            backgroundColor: "white",
             padding: 15,
             height: 230,
-          }}>
+          }}
+        >
           <View style={{}}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-              Size<Text style={{ color: 'red' }}>*</Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+              Size<Text style={{ color: "red" }}>*</Text>
             </Text>
-            <Text style={{ fontSize: 16, paddingTop: 5, color: '#707070' }}>
+            <Text style={{ fontSize: 16, paddingTop: 5, color: "#707070" }}>
               Chọn 1 loại size
             </Text>
           </View>
@@ -220,110 +221,121 @@ export default function ItemProductDetailComponent({ route }) {
               const newPrice = getSize(value);
               setPrice(newPrice);
             }}
-            value={checked}>
+            value={checked}
+          >
             <View
               style={{
                 height: 175,
-                justifyContent: 'space-around',
+                justifyContent: "space-around",
                 paddingVertical: 20,
-              }}>
+              }}
+            >
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
-                  onPress={() => setChecked('Lớn')}>
+                  onPress={() => setChecked("Lớn")}
+                >
                   <RadioButton
                     value="Lớn"
-                    status={checked === 'Lớn' ? 'checked' : 'unchecked'}
+                    status={checked === "Lớn" ? "checked" : "unchecked"}
                   />
                   <Text
                     style={{
                       fontSize: 17,
                       paddingLeft: 10,
-                    }}>
+                    }}
+                  >
                     Lớn
                   </Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 17 }}>
-                  {getSize('Lớn').toLocaleString('it-IT', {
-                    style: 'currency',
-                    currency: 'VND',
+                  {getSize("Lớn").toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
                   })}
                 </Text>
               </View>
 
-              <View style={{ borderWidth: 0.2, borderColor: '#F0F0F0' }} />
+              <View style={{ borderWidth: 0.2, borderColor: "#F0F0F0" }} />
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
-                  onPress={() => setChecked('Vừa')}>
+                  onPress={() => setChecked("Vừa")}
+                >
                   <RadioButton
                     value="Vừa"
-                    status={checked === 'Vừa' ? 'checked' : 'unchecked'}
+                    status={checked === "Vừa" ? "checked" : "unchecked"}
                   />
                   <Text
                     style={{
                       fontSize: 17,
                       paddingLeft: 10,
-                    }}>
+                    }}
+                  >
                     Vừa
                   </Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 17 }}>
-                  {getSize('Vừa').toLocaleString('it-IT', {
-                    style: 'currency',
-                    currency: 'VND',
+                  {getSize("Vừa").toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
                   })}
                 </Text>
               </View>
 
-              <View style={{ borderWidth: 0.5, borderColor: '#F0F0F0' }} />
+              <View style={{ borderWidth: 0.5, borderColor: "#F0F0F0" }} />
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}
-                  onPress={() => setChecked('Nhỏ')}>
+                  onPress={() => setChecked("Nhỏ")}
+                >
                   <RadioButton
                     value="Nhỏ"
-                    status={checked === 'Nhỏ' ? 'checked' : 'unchecked'}
+                    status={checked === "Nhỏ" ? "checked" : "unchecked"}
                   />
                   <Text
                     style={{
                       fontSize: 17,
                       paddingLeft: 10,
-                    }}>
+                    }}
+                  >
                     Nhỏ
                   </Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 17 }}>
-                  {getSize('Nhỏ').toLocaleString('it-IT', {
-                    style: 'currency',
-                    currency: 'VND',
+                  {getSize("Nhỏ").toLocaleString("it-IT", {
+                    style: "currency",
+                    currency: "VND",
                   })}
                 </Text>
               </View>
@@ -334,20 +346,21 @@ export default function ItemProductDetailComponent({ route }) {
         <View
           style={{
             marginTop: 9,
-            backgroundColor: 'white',
+            backgroundColor: "white",
             padding: 15,
             height: 140,
             marginBottom: 20,
-          }}>
+          }}
+        >
           <View style={{}}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
               Yêu cầu khác
             </Text>
-            <Text style={{ fontSize: 16, paddingTop: 5, color: '#707070' }}>
+            <Text style={{ fontSize: 16, paddingTop: 5, color: "#707070" }}>
               Những tùy chọn khác
             </Text>
           </View>
-          <View style={{ marginVertical: 10, alignItems: 'center' }}>
+          <View style={{ marginVertical: 10, alignItems: "center" }}>
             <TextInput
               placeholder="Thêm ghi chú"
               style={{
@@ -355,7 +368,7 @@ export default function ItemProductDetailComponent({ route }) {
                 width: 340,
                 borderWidth: 1,
                 borderRadius: 12,
-                borderColor: '#919191',
+                borderColor: "#919191",
                 paddingLeft: 12,
               }}
             />
@@ -365,29 +378,32 @@ export default function ItemProductDetailComponent({ route }) {
       <View
         style={{
           height: 60,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           paddingHorizontal: 12,
-          justifyContent: 'center',
-        }}>
-        <View style={{ flexDirection: 'row' }}>
+          justifyContent: "center",
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
               flex: 0.8,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               style={{
                 height: 35,
                 width: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#FDF2DE',
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FDF2DE",
                 borderRadius: 20,
                 opacity: quantity === 1 ? 0.5 : 1,
               }}
-              onPress={() => changeQuantity('reduce')}>
+              onPress={() => changeQuantity("reduce")}
+            >
               <AntDesign name="minus" size={22} color="#B57031" />
             </TouchableOpacity>
             <Text style={{ fontSize: 20 }}>{quantity}</Text>
@@ -395,43 +411,47 @@ export default function ItemProductDetailComponent({ route }) {
               style={{
                 height: 35,
                 width: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#FDF2DE',
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FDF2DE",
                 borderRadius: 20,
               }}
-              onPress={() => changeQuantity('increase')}>
+              onPress={() => changeQuantity("increase")}
+            >
               <Ionicons name="add" size={22} color="#B57031" />
             </TouchableOpacity>
           </View>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
               flex: 2,
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}>
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
             <TouchableOpacity
               style={{
                 height: 45,
                 borderRadius: 12,
-                justifyContent: 'center',
-                backgroundColor: '#E57704',
+                justifyContent: "center",
+                backgroundColor: "#E57704",
                 width: 200,
-                alignItems: 'center',
-              }}>
+                alignItems: "center",
+              }}
+            >
               {/* <Text style={{color:'white', fontSize: 14}}>Mua ngay</Text> */}
               <Text
                 style={{
-                  color: 'white',
+                  color: "white",
                   fontSize: 18,
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  fontWeight: '500',
-                }}>
-                {(price * quantity).toLocaleString('it-IT', {
-                  style: 'currency',
-                  currency: 'VND',
+                  alignItems: "center",
+                  textAlign: "center",
+                  fontWeight: "500",
+                }}
+              >
+                {(price * quantity).toLocaleString("it-IT", {
+                  style: "currency",
+                  currency: "VND",
                 })}
               </Text>
             </TouchableOpacity>
@@ -439,10 +459,14 @@ export default function ItemProductDetailComponent({ route }) {
               style={{
                 height: 35,
                 width: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center",
                 marginLeft: 5,
-              }}>
+              }}
+              onPress={() => {
+                addToCart(user.id, product.id, price * quantity);
+              }}
+            >
               <Zocial name="cart" size={24} color="#AD5A03" />
             </TouchableOpacity>
           </View>

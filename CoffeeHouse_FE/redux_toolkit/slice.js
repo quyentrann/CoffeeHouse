@@ -14,8 +14,6 @@ const userSlice = createSlice({
       state.userInfo = null;
     },
     setProducts: (state, action) => {
-      console.log(action.payload);
-      
       state.products = action.payload;
     }
   },

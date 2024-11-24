@@ -13,7 +13,6 @@ import {
   
   export default function ItemCategoryCartComponent() {
     const carts = useSelector((state) => state.user.userInfo.carts);
-    console.log(carts);
     
     return (
       <FlatList

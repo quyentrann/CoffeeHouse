@@ -19,7 +19,6 @@ function CategoryProductScreen({ navigation, route }) {
   const [search, setSearch] = useState('');
   const products = useSelector((state) => state.user.products);
   const category = route.params.item;
-  console.log(category.label);
   const [listCategory, setListCategory] = useState([]);
 
   useEffect(() => {
@@ -55,7 +54,6 @@ function CategoryProductScreen({ navigation, route }) {
       setListCategory(['Bánh mặn', 'Bánh ngọt', 'Bánh Pastry']);
     }
   }
-  console.log(listCategory);
 
   // useEffect(() => {
   //   if (search === '') {
