@@ -15,15 +15,24 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import ItemProductBagComponent from "../src/components/ItemProductBagComponent";
+import { v4 as uuid } from "uuid";
 
-function FavoriteProductsScreen({ navigation }) {
-  const [favorite, setFavorites] = useState([]);
+function HistoryOrder({ navigation }) {
+  const order = useSelector((state) => state.user.userInfo.orders);
+
+  const [productHistory, setProductHistory] = useState([]);
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.user.userInfo.favorites);
+
+  const getAllProducts = (order) => {
+    return order
+      .map((order) => order.orderDetails) // Lấy orderDetails từ mỗi đơn hàng
+      .flat() // Làm phẳng tất cả các orderDetails thành một mảng duy nhất
+      .map((detail) => detail.product);
+  };
 
   useEffect(() => {
-    setFavorites(favorites);
-  }, [favorites]);
+    setProductHistory(getAllProducts(order));
+  }, [order]);
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
@@ -44,13 +53,13 @@ function FavoriteProductsScreen({ navigation }) {
                 paddingBottom: 3,
               }}
             >
-              Sản phẩm Yêu Thích
+              Lịch sử mua hàng
             </Text>
           </View>
         </View>
         <View style={{ borderWidth: 0.2, borderColor: "#D1D1D1" }} />
         <View style={{ backgroundColor: "white" }}>
-          {favorites.length === 0 ? (
+          {productHistory?.length === 0 ? (
             <View
               style={{
                 justifyContent: "center",
@@ -78,15 +87,15 @@ function FavoriteProductsScreen({ navigation }) {
                   color: "#4A4A4A",
                 }}
               >
-                Bạn chưa có sản phẩm yêu thích
+                Bạn chưa có lịch sử mua hàng
               </Text>
             </View>
           ) : (
             <FlatList
-              data={favorite}
-              keyExtractor={(item) => item.id}
+              data={productHistory}
+              keyExtractor={(item) => uuid()}
               renderItem={({ item }) => {
-                return <ItemProductBagComponent product={item.product} />;
+                return <ItemProductBagComponent product={item} />;
               }}
             />
           )}
@@ -96,4 +105,4 @@ function FavoriteProductsScreen({ navigation }) {
   );
 }
 
-export default FavoriteProductsScreen;
+export default HistoryOrder;

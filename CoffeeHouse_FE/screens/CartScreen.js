@@ -16,7 +16,7 @@ import ItemCategoryCartComponent from "../src/components/ItemCategoryCartCompone
 import { Checkbox } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import ItemCartComponent from "../src/components/ItemCartComponent";
-import { setUser } from "../redux_toolkit/slice";
+import { setUser, startLoading, stopLoading } from "../redux_toolkit/slice";
 import { deleteCart, order } from "../api/product";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -24,7 +24,6 @@ function CartScreen({ navigation, route }) {
   const user = useSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
   const [checked, setChecked] = React.useState(false);
-  const [checkedAll, setCheckedAll] = useState(false);
   const products = useSelector((state) => state.user.userInfo.carts);
   const [productCart, setProductCart] = useState(
     products.map((item) => ({
@@ -58,6 +57,14 @@ function CartScreen({ navigation, route }) {
     }
   });
 
+  const onCheckAll = () => {
+    const newProductCart = [...productCart];
+    newProductCart.forEach((item) => (item.isSelected = !checked));
+    console.log(newProductCart);
+
+    setProductCart(newProductCart);
+    setChecked(!checked);
+  };
   // Assuming you have a list of product prices available somewhere in your app
   const getProductPrice = (productId) => {
     // Implement this to fetch the price based on the productId
@@ -87,7 +94,10 @@ function CartScreen({ navigation, route }) {
         price: getProductPrice(item.productId) * item.quantity,
       }));
     if (orderdetail.length > 0) {
+      dispatch(startLoading());
       const rep = await order(orderdetail, user.id);
+      dispatch(stopLoading());
+
       if (rep) {
         dispatch(setUser(rep));
       }
@@ -100,7 +110,9 @@ function CartScreen({ navigation, route }) {
       .map((item) => item.productId);
 
     if (productIds.length > 0) {
+      dispatch(startLoading());
       const rep = await deleteCart(productIds, user.id);
+      dispatch(stopLoading());
       if (rep) {
         dispatch(setUser(rep));
       }
@@ -185,7 +197,7 @@ function CartScreen({ navigation, route }) {
                 <ItemCartComponent
                   product={item}
                   update={updateCart}
-                  key={item.id}
+                  checkedAll={checked}
                 />
               );
             }}
@@ -205,7 +217,7 @@ function CartScreen({ navigation, route }) {
           <Checkbox
             status={checked ? "checked" : "unchecked"}
             onPress={() => {
-              setChecked(!checked);
+              onCheckAll();
             }}
           />
           <Text style={{ fontSize: 16 }}>Tất cả</Text>

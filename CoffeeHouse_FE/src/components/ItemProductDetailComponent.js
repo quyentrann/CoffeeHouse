@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Zocial from "@expo/vector-icons/Zocial";
 import { RadioButton } from "react-native-paper";
 import { addCart, addFavorite, deleteFavorite } from "../../api/user";
-import { setUser } from "../../redux_toolkit/slice";
+import { setUser, startLoading, stopLoading } from "../../redux_toolkit/slice";
 
 const basePath = process.env.EXPO_PUBLIC_API_KEY;
 export default function ItemProductDetailComponent({ route }) {
@@ -75,9 +75,12 @@ export default function ItemProductDetailComponent({ route }) {
   }, [product]);
 
   async function addToCart(userId, productId, quantity) {
-    const rep = await addCart(userId, productId, quantity)
+    dispatch(startLoading());
+    const rep = await addCart(userId, productId, quantity);
+    dispatch(stopLoading());
+
     if (rep) {
-      dispatch(setUser(rep));   
+      dispatch(setUser(rep));
     }
   }
 
@@ -91,11 +94,13 @@ export default function ItemProductDetailComponent({ route }) {
   const handleFavoriteToggle = async () => {
     try {
       let updatedUser;
+      dispatch(startLoading());
       if (isFavorite) {
         updatedUser = await deleteFavorite(user.id, product.id);
       } else {
         updatedUser = await addFavorite(user.id, product.id);
       }
+      dispatch(stopLoading());
       dispatch(setUser(updatedUser));
       setIsFavorite(!isFavorite);
     } catch (error) {

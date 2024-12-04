@@ -24,6 +24,8 @@ import CartScreen from "../../screens/CartScreen";
 import CategoryProductScreen from "../../screens/CategoryProductScreen";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Spinner from "react-native-loading-spinner-overlay";
+import HistoryOrder from "../../screens/HistoryOrder";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -83,10 +85,10 @@ const TabScreen = () => {
             fontWeight: "500",
           },
           tabBarBadgeStyle: {
-            marginLeft:5,
+            marginLeft: 5,
             fontSize: 10,
             height: 17,
-            width:15,
+            width: 15,
           },
         }}
       />
@@ -103,10 +105,10 @@ const TabScreen = () => {
             fontWeight: "500",
           },
           tabBarBadgeStyle: {
-            marginLeft:5,
+            marginLeft: 5,
             fontSize: 10,
             height: 17,
-            width:15,
+            width: 15,
           },
         }}
       />
@@ -157,9 +159,16 @@ const TabScreen = () => {
   );
 };
 
-export default function Auth() {
+const Nav = () => {
+  const loading = useSelector((state) => state.user.loading);
+
   return (
-    <Provider store={store}>
+    <>
+      <Spinner
+        visible={loading}
+        textContent={"THE COFFEE HOUSE ..."}
+        textStyle={{ color: "#fff" }}
+      />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -188,8 +197,16 @@ export default function Auth() {
             name="CategoryProductScreen"
             component={CategoryProductScreen}
           />
+          <Stack.Screen name="HistoryOrder" component={HistoryOrder} />
         </Stack.Navigator>
       </NavigationContainer>
+    </>
+  );
+};
+export default function Auth() {
+  return (
+    <Provider store={store}>
+      <Nav />
     </Provider>
   );
 }

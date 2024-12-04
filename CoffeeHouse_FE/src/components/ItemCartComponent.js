@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import Zocial from "@expo/vector-icons/Zocial";
@@ -7,10 +7,14 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Checkbox } from "react-native-paper";
 
 const basePath = process.env.EXPO_PUBLIC_API_KEY;
-export default function ItemCartComponent({ product, update }) {
+export default function ItemCartComponent({ product, update, checkedAll }) {
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(1);
   const [checked, setChecked] = React.useState(false);
+
+  useEffect(() => {
+    setChecked(checkedAll);
+  }, [checkedAll]);
 
   function changeQuantity(status) {
     if (status === "increase") {

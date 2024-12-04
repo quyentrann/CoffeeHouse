@@ -3,7 +3,7 @@ import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../redux_toolkit/slice";
+import { setUser, startLoading, stopLoading } from "../../redux_toolkit/slice";
 import { addCart } from "../../api/user";
 
 const basePath = process.env.EXPO_PUBLIC_API_KEY;
@@ -13,7 +13,10 @@ export default function ItemProductBagComponent({ product }) {
   const dispatch = useDispatch();
 
   async function addToCart(userId, productId, quantity) {
+    dispatch(startLoading());
     const rep = await addCart(userId, productId, quantity);
+    dispatch(stopLoading());
+
     if (rep) {
       dispatch(setUser(rep));
     }
